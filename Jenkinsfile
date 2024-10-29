@@ -64,7 +64,7 @@ pipeline {
                 }
             }
         }
-
+        /*
         stage('Check Docker Status') {            
             steps {
                 script {
@@ -84,12 +84,12 @@ pipeline {
                 script {
                     echo "Navigating to project_source_code and running Docker Compose."
                     dir('project_source_code') {
-                        sh 'docker compose up --build'
+                        sh "docker compose up --build"
                     }
                 }
             }
         }
-
+        */
         stage('Setup JMeter') {           
             when {
                 expression { env.JMETER_ENABLED == 'true' }  // Run only if JMeter is enabled
