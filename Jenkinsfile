@@ -2,17 +2,31 @@ pipeline {
     agent any
 
     environment {
-        JMETER_HOME = '/path/to/jmeter'   // Ensure this is the correct JMeter path
-        TEST_PLAN = 'your-test-plan.jmx'  // Your JMX file
-        REPORT_DIR = 'jmeter-report'      // Adjust the directory if needed
+        JMETER_HOME = '/Users/bharathkumarm/apache-jmeter-5.6.3'   // Set the JMeter path here (if installed manually)
+        TEST_PLAN = '/Users/bharathkumarm/Docker/JmeterScript/Wordsmith.jmx'  // Your JMX file
+        REPORT_DIR = '/Users/bharathkumarm/Docker/JmeterScript/jmeter-report'
     }
 
     stages {
+        stage('Cleanup Previous Reports') {
+            steps {
+                echo "Checking for existing JMeter report folder."
+                script {
+                    if (fileExists(REPORT_DIR)) {
+                        echo "Found existing report directory. Deleting..."
+                        sh "rm -rf ${REPORT_DIR}"
+                    } else {
+                        echo "No existing report directory found. Proceeding..."
+                    }
+                }
+            }
+        }
+
         stage('Setup JMeter') {
             steps {
                 script {
                     if (!fileExists("${JMETER_HOME}/bin/jmeter")) {
-                        error "JMeter is not installed. Ensure it is available on this node."
+                        error "JMeter is not installed or not available on this node."
                     }
                 }
                 echo "JMeter setup verified."
