@@ -64,6 +64,24 @@ pipeline {
             }
         }
 
+        stage('Cleanup Previous Reports') {
+            agent any
+            when {
+                expression { env.JMETER_ENABLED == 'true' }   // Run only if JMeter is enabled
+            }
+            steps {
+                echo "Checking for existing JMeter report folder."
+                script {
+                    if (fileExists(env.REPORT_DIR)) {
+                        echo "Found existing report directory. Deleting..."
+                        sh "rm -rf ${env.REPORT_DIR}"
+                    } else {
+                        echo "No existing report directory found. Proceeding..."
+                    }
+                }
+            }
+        }
+
         stage('Run JMeter Test') {
             agent any
             when {
