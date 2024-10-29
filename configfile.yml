@@ -13,5 +13,5 @@ tests:
     CPU_CAPACITY: 100                   # Percentage of total CPU capacity to consume
 
 project:
-  github_repo: '<your-github-repo-name>'  # Placeholder for GitHub repository name
-  branch_name: '<your-branch-name>'         # Placeholder for branch name
+  github_repo: 'https://github.com/bharathbk07/wordsmith.git'  # Placeholder for GitHub repository name
+  branch_name: 'main'         # Placeholder for branch name
