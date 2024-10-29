@@ -61,7 +61,7 @@ pipeline {
                 script {
                     echo "Cloning repository: ${env.GITHUB_REPO} from branch: ${env.BRANCH_NAME}"
                     dir('project_source_code') {
-                        git(url: "https://github.com/${env.GITHUB_REPO}.git", branch: "${env.BRANCH_NAME}")
+                        git(url: "${env.GITHUB_REPO}", branch: "${env.BRANCH_NAME}")
                     }
                 }
             }
