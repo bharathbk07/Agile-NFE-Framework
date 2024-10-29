@@ -30,6 +30,10 @@ pipeline {
                     def jmeterEnabled = config.tests.jmeter.enabled
                     def chaosEnabled = config.tests.chaos_experiment.enabled
 
+                    // Read GitHub repository and branch information
+                    env.GITHUB_REPO = config.project.github_repo
+                    env.BRANCH_NAME = config.project.branch_name
+
                     // Logging for debugging
                     echo "JMeter Enabled: ${jmeterEnabled}"
                     echo "Chaos Experiment Enabled: ${chaosEnabled}"
@@ -37,6 +41,8 @@ pipeline {
                     echo "CPU Length: ${cpuLength}"
                     echo "CPU Core: ${cpuCore}"
                     echo "CPU Capacity: ${cpuCapacity}"
+                    echo "GitHub Repository: ${env.GITHUB_REPO}"
+                    echo "Branch Name: ${env.BRANCH_NAME}"
 
                     // Setting these as environment variables for later use
                     env.JMETER_ENABLED = jmeterEnabled.toString()
@@ -45,6 +51,45 @@ pipeline {
                     env.CPU_LENGTH = "${cpuLength}"
                     env.CPU_CORE = "${cpuCore}"
                     env.CPU_CAPACITY = "${cpuCapacity}"
+                }
+            }
+        }
+
+        stage('Clone Repository') {
+            agent any
+            steps {
+                script {
+                    echo "Cloning repository: ${env.GITHUB_REPO} from branch: ${env.BRANCH_NAME}"
+                    dir('project_source_code') {
+                        git(url: "https://github.com/${env.GITHUB_REPO}.git", branch: "${env.BRANCH_NAME}")
+                    }
+                }
+            }
+        }
+
+        stage('Check Docker Status') {
+            agent any
+            steps {
+                script {
+                    // Check if Docker is running
+                    def dockerRunning = sh(script: "docker info", returnStatus: true) == 0
+                    if (!dockerRunning) {
+                        error "Docker is not running. Please start Docker and retry."
+                    } else {
+                        echo "Docker is running."
+                    }
+                }
+            }
+        }
+
+        stage('Run Docker Compose') {
+            agent any
+            steps {
+                script {
+                    echo "Navigating to project_source_code and running Docker Compose."
+                    dir('project_source_code') {
+                        sh 'docker compose up --build'
+                    }
                 }
             }
         }

@@ -11,3 +11,7 @@ tests:
     CPU_LENGTH: 30                      # Duration of CPU attack
     CPU_CORE: 1                         # Number of cores to impact
     CPU_CAPACITY: 100                   # Percentage of total CPU capacity to consume
+
+project:
+  github_repo: '<your-github-repo-name>'  # Placeholder for GitHub repository name
+  branch_name: '<your-branch-name>'         # Placeholder for branch name
