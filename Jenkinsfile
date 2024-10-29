@@ -67,21 +67,6 @@ pipeline {
             }
         }
 
-        stage('Check Docker Status') {
-            agent any
-            steps {
-                script {
-                    // Check if Docker is running
-                    def dockerRunning = sh(script: "docker info", returnStatus: true) == 0
-                    if (!dockerRunning) {
-                        error "Docker is not running. Please start Docker and retry."
-                    } else {
-                        echo "Docker is running."
-                    }
-                }
-            }
-        }
-
         stage('Run Docker Compose') {
             agent any
             steps {
