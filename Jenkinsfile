@@ -8,8 +8,7 @@ pipeline {
     }
 
     stages {
-        stage('Load Configuration') {
-            agent any
+        stage('Load Configuration') {          
             steps {
                 script {
                     // Load the YAML configuration file
@@ -55,8 +54,7 @@ pipeline {
             }
         }
 
-        stage('Clone Repository') {
-            agent any
+        stage('Clone Repository') {       
             steps {
                 script {
                     echo "Cloning repository: ${env.GITHUB_REPO} from branch: ${env.BRANCH_NAME}"
@@ -67,8 +65,21 @@ pipeline {
             }
         }
 
-        stage('Run Docker Compose') {
-            agent any
+        stage('Check Docker Status') {            
+            steps {
+                script {
+                    // Check if Docker is running
+                    def dockerRunning = sh(script: "docker info", returnStatus: true) == 0
+                    if (!dockerRunning) {
+                        error "Docker is not running. Please start Docker and retry."
+                    } else {
+                        echo "Docker is running."
+                    }
+                }
+            }
+        }
+
+        stage('Run Docker Compose') {           
             steps {
                 script {
                     echo "Navigating to project_source_code and running Docker Compose."
@@ -79,8 +90,7 @@ pipeline {
             }
         }
 
-        stage('Setup JMeter') {
-            agent any
+        stage('Setup JMeter') {           
             when {
                 expression { env.JMETER_ENABLED == 'true' }  // Run only if JMeter is enabled
             }
@@ -94,8 +104,7 @@ pipeline {
             }
         }
 
-        stage('Cleanup Previous Reports') {
-            agent any
+        stage('Cleanup Previous Reports') {           
             when {
                 expression { env.JMETER_ENABLED == 'true' }   // Run only if JMeter is enabled
             }
@@ -112,8 +121,7 @@ pipeline {
             }
         }
 
-        stage('Run JMeter Test') {
-            agent any
+        stage('Run JMeter Test') {           
             when {
                 expression { env.JMETER_ENABLED == 'true' }  // Run only if JMeter is enabled
             }
@@ -129,8 +137,7 @@ pipeline {
             }
         }
 
-        stage('Run Chaos Experiment') {
-            agent any
+        stage('Run Chaos Experiment') {           
             when {
                 expression { env.CHAOS_ENABLED == 'true' }  // Run only if chaos experiment is enabled
             }
