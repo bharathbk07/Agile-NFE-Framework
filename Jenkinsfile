@@ -56,18 +56,6 @@ pipeline {
                 echo "HTML report found and ready to archive."
             }
         }
-
-        stage('Generate and Archive Reports') {
-            steps {
-                echo "Archiving HTML report and JTL results."
-                archiveArtifacts artifacts: "${REPORT_DIR}/**/*", allowEmptyArchive: false
-                publishHTML([
-                    reportDir: "${REPORT_DIR}/html-report",
-                    reportFiles: 'index.html',
-                    reportName: 'JMeter Test Report'
-                ])
-            }
-        }
     }
 
     post {
