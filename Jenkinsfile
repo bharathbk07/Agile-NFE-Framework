@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     environment {
-        JMETER_HOME = '/Users/bharathkumarm/apache-jmeter-5.6.3'   // Set the JMeter path here (if installed manually)
-        TEST_PLAN = '/Users/bharathkumarm/Docker/JmeterScript/Wordsmith.jmx'  // Your JMX file
-        REPORT_DIR = '/Users/bharathkumarm/Docker/JmeterScript/jmeter-report'
+        JMETER_HOME = '/path/to/jmeter'   // Ensure this is the correct JMeter path
+        TEST_PLAN = 'your-test-plan.jmx'  // Your JMX file
+        REPORT_DIR = 'jmeter-report'      // Adjust the directory if needed
     }
 
     stages {
@@ -32,10 +32,21 @@ pipeline {
             }
         }
 
-        stage('Generate Reports') {
+        stage('Verify Reports') {
+            steps {
+                script {
+                    if (!fileExists("${REPORT_DIR}/html-report/index.html")) {
+                        error "HTML report not generated. Check the JMeter execution logs."
+                    }
+                }
+                echo "HTML report found and ready to archive."
+            }
+        }
+
+        stage('Generate and Archive Reports') {
             steps {
                 echo "Archiving HTML report and JTL results."
-                archiveArtifacts artifacts: "${REPORT_DIR}/**", allowEmptyArchive: false
+                archiveArtifacts artifacts: "${REPORT_DIR}/**/*", allowEmptyArchive: false
                 publishHTML([
                     reportDir: "${REPORT_DIR}/html-report",
                     reportFiles: 'index.html',
@@ -53,7 +64,7 @@ pipeline {
             echo 'JMeter test executed successfully.'
         }
         failure {
-            echo 'JMeter test failed.'
+            echo 'JMeter test failed. Please check logs and artifacts.'
         }
     }
 }
