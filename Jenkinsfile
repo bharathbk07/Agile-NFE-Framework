@@ -3,9 +3,9 @@ pipeline {
 
     environment {
         config = readYaml file: 'configfile.yml'  // Read the YAML configuration
-        JMETER_HOME = config.tests.jmeter.JMETER_HOME
-        TEST_PLAN = config.tests.jmeter.TEST_PLAN
-        REPORT_DIR = config.tests.jmeter.REPORT_DIR
+        JMETER_HOME = "${config.tests.jmeter.JMETER_HOME}"  // Quoted values
+        TEST_PLAN = "${config.tests.jmeter.TEST_PLAN}"      // Quoted values
+        REPORT_DIR = "${config.tests.jmeter.REPORT_DIR}"    // Quoted values
         ATTACK_ID = ''
     }
 
