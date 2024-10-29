@@ -64,7 +64,7 @@ pipeline {
                 }
             }
         }
-        /*
+
         stage('Check Docker Status') {            
             steps {
                 script {
@@ -89,7 +89,7 @@ pipeline {
                 }
             }
         }
-        */
+
         stage('Setup JMeter') {           
             when {
                 expression { env.JMETER_ENABLED == 'true' }  // Run only if JMeter is enabled
