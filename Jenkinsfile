@@ -2,35 +2,47 @@ pipeline {
     agent none
 
     environment {
-        config = readYaml file: 'configfile.yml'  // Read the YAML configuration
-        JMETER_HOME = "${config.tests.jmeter.JMETER_HOME}"  // Quoted values
-        TEST_PLAN = "${config.tests.jmeter.TEST_PLAN}"      // Quoted values
-        REPORT_DIR = "${config.tests.jmeter.REPORT_DIR}"    // Quoted values
         ATTACK_ID = ''
     }
 
-    parameters {
-        string(name: 'TARGET_IDENTIFIER', defaultValue: config.tests.chaos_experiment.TARGET_IDENTIFIER, description: 'Host to target')
-        string(name: 'CPU_LENGTH', defaultValue: "${config.tests.chaos_experiment.CPU_LENGTH}", description: 'Duration of CPU attack')
-        string(name: 'CPU_CORE', defaultValue: "${config.tests.chaos_experiment.CPU_CORE}", description: 'Number of cores to impact')
-        string(name: 'CPU_CAPACITY', defaultValue: "${config.tests.chaos_experiment.CPU_CAPACITY}", description: 'Percentage of total CPU capacity to consume')
-    }
-
     stages {
-        stage('Cleanup Previous Reports') {
+        stage('Load Configuration') {
             agent any
-            when {
-                expression { config.tests.jmeter.enabled }  // Run only if JMeter is enabled
-            }
             steps {
-                echo "Checking for existing JMeter report folder."
                 script {
-                    if (fileExists(REPORT_DIR)) {
-                        echo "Found existing report directory. Deleting..."
-                        sh "rm -rf ${REPORT_DIR}"
-                    } else {
-                        echo "No existing report directory found. Proceeding..."
-                    }
+                    // Load the YAML configuration file
+                    def config = readYaml file: 'configfile.yml'
+
+                    // Set environment variables based on the configuration
+                    env.JMETER_HOME = config.tests.jmeter.JMETER_HOME
+                    env.TEST_PLAN = config.tests.jmeter.TEST_PLAN
+                    env.REPORT_DIR = config.tests.jmeter.REPORT_DIR
+
+                    // Store chaos experiment values as local variables
+                    def targetIdentifier = config.tests.chaos_experiment.TARGET_IDENTIFIER
+                    def cpuLength = config.tests.chaos_experiment.CPU_LENGTH
+                    def cpuCore = config.tests.chaos_experiment.CPU_CORE
+                    def cpuCapacity = config.tests.chaos_experiment.CPU_CAPACITY
+
+                    // Read enabled status
+                    def jmeterEnabled = config.tests.jmeter.enabled
+                    def chaosEnabled = config.tests.chaos_experiment.enabled
+
+                    // Logging for debugging
+                    echo "JMeter Enabled: ${jmeterEnabled}"
+                    echo "Chaos Experiment Enabled: ${chaosEnabled}"
+                    echo "Target Identifier: ${targetIdentifier}"
+                    echo "CPU Length: ${cpuLength}"
+                    echo "CPU Core: ${cpuCore}"
+                    echo "CPU Capacity: ${cpuCapacity}"
+
+                    // Setting these as environment variables for later use
+                    env.JMETER_ENABLED = jmeterEnabled.toString()
+                    env.CHAOS_ENABLED = chaosEnabled.toString()
+                    env.TARGET_IDENTIFIER = targetIdentifier
+                    env.CPU_LENGTH = "${cpuLength}"
+                    env.CPU_CORE = "${cpuCore}"
+                    env.CPU_CAPACITY = "${cpuCapacity}"
                 }
             }
         }
@@ -38,11 +50,11 @@ pipeline {
         stage('Setup JMeter') {
             agent any
             when {
-                expression { config.tests.jmeter.enabled }  // Run only if JMeter is enabled
+                expression { env.JMETER_ENABLED == 'true' }  // Run only if JMeter is enabled
             }
             steps {
                 script {
-                    if (!fileExists("${JMETER_HOME}/bin/jmeter")) {
+                    if (!fileExists("${env.JMETER_HOME}/bin/jmeter")) {
                         error "JMeter is not installed or not available on this node."
                     }
                 }
@@ -53,16 +65,16 @@ pipeline {
         stage('Run JMeter Test') {
             agent any
             when {
-                expression { config.tests.jmeter.enabled }  // Run only if JMeter is enabled
+                expression { env.JMETER_ENABLED == 'true' }  // Run only if JMeter is enabled
             }
             steps {
-                echo "Executing JMeter Test Plan: ${TEST_PLAN}"
+                echo "Executing JMeter Test Plan: ${env.TEST_PLAN}"
                 sh """
-                    mkdir -p ${REPORT_DIR}
-                    ${JMETER_HOME}/bin/jmeter \
-                        -n -t ${TEST_PLAN} \
-                        -l ${REPORT_DIR}/results.jtl \
-                        -e -o ${REPORT_DIR}/html-report
+                    mkdir -p ${env.REPORT_DIR}
+                    ${env.JMETER_HOME}/bin/jmeter \
+                        -n -t ${env.TEST_PLAN} \
+                        -l ${env.REPORT_DIR}/results.jtl \
+                        -e -o ${env.REPORT_DIR}/html-report
                 """
             }
         }
@@ -70,7 +82,7 @@ pipeline {
         stage('Run Chaos Experiment') {
             agent any
             when {
-                expression { config.tests.chaos_experiment.enabled }  // Run only if chaos experiment is enabled
+                expression { env.CHAOS_ENABLED == 'true' }  // Run only if chaos experiment is enabled
             }
             steps {
                 withCredentials([
@@ -78,6 +90,7 @@ pipeline {
                     string(credentialsId: 'GREMLIN_TEAM_ID', variable: 'GREMLIN_TEAM_ID')
                 ]) {
                     script {
+                        // Use local variables for chaos experiment values
                         ATTACK_ID = sh(
                             script: """
                                 curl -s -H 'Content-Type: application/json;charset=utf-8' \
@@ -86,11 +99,11 @@ pipeline {
                                 --data '{
                                     "command": {
                                         "type": "cpu",
-                                        "args": ["-c", "${CPU_CORE}", "-l", "${CPU_LENGTH}", "-p", "${CPU_CAPACITY}"]
+                                        "args": ["-c", "${env.CPU_CORE}", "-l", "${env.CPU_LENGTH}", "-p", "${env.CPU_CAPACITY}"]
                                     },
                                     "target": {
                                         "type": "Exact",
-                                        "hosts": { "ids": ["${TARGET_IDENTIFIER}"] }
+                                        "hosts": { "ids": ["${env.TARGET_IDENTIFIER}"] }
                                     }
                                 }' --compressed
                             """, 
@@ -105,6 +118,7 @@ pipeline {
 
     post {
         always {
+            cleanWs()  // Clean the workspace after pipeline execution
             echo 'Pipeline execution completed.'
         }
         success {
