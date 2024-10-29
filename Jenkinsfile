@@ -1,5 +1,5 @@
 pipeline {
-    agent none
+    agent "localhost_mac"
 
     environment {
         ATTACK_ID = ''
