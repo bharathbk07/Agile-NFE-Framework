@@ -82,17 +82,18 @@ pipeline {
         stage('Run Docker Compose') {           
             steps {
                 script {
-                    echo "Navigating to project_source_code and running Docker Compose."
+                    echo "Navigating to project_source_code and running Docker Compose in detached mode."
                     dir('project_source_code') {
-                    // Run Docker Compose in detached mode
-                    sh "docker compose up --build -d"
+                        // Run Docker Compose in detached mode
+                        sh "docker compose up --build -d"
 
-                    // Verify that containers are running
-                    def runningContainers = sh(script: "docker ps --format '{{.Names}}'", returnStdout: true).trim()
-                    if (runningContainers) {
-                        echo "Running containers: ${runningContainers}"
-                    } else {
-                        error "No containers are running. Please check your Docker setup."
+                        // Verify that containers are running
+                        def runningContainers = sh(script: "docker ps --format '{{.Names}}'", returnStdout: true).trim()
+                        if (runningContainers) {
+                            echo "Running containers: ${runningContainers}"
+                        } else {
+                            error "No containers are running. Please check your Docker setup."
+                        }
                     }
                 }
             }
