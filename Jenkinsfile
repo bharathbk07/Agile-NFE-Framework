@@ -150,7 +150,7 @@ pipeline {
                                     "type": "Exact",
                                     "hosts": { "ids": ["${env.TARGET_IDENTIFIER}"] }
                                 }
-                            }' --compressed
+                            }' --compressed | jq -r '.id' || true
                         """, returnStdout: true).trim()
 
                         echo "Chaos experiment initiated. View details at: https://app.gremlin.com/attacks/${ATTACK_ID}"
