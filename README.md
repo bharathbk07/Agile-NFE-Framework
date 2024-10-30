@@ -2,6 +2,12 @@
 
 This `Jenkinsfile` defines a CI/CD pipeline for automating the deployment of the application and ensuring it complies with non-functional engineering (NFE) standards. The pipeline covers key aspects such as **performance testing**, **static code scanning**, and **chaos engineering**. Once all stages are successfully completed, an email is triggered to stakeholders, indicating that the application is ready for deployment.
 
+![Jenkins Screenshot](Screenshot/Jenkins.png)
+![Docker Screenshot](Screenshot/docker.png)
+![SonarQube Screenshot](Screenshot/SonarQube.png)
+![Datadog Jmeter Screenshot](Screenshot/Datadog Jmeter.png)
+![Application Screenshot](Screenshot/application.png)
+
 ## Shift-Left or Shift-Right Approach?
 This pipeline follows a **shift-left approach** by integrating testing (performance and static code analysis) early in the CI/CD process. Shift-left practices help catch issues earlier in the development cycle, minimizing risks and reducing the cost of fixing defects. Additionally, chaos engineering introduces a **shift-right component** by validating the resilience of the application in production-like scenarios, ensuring that the system behaves reliably under real-world conditions.
 
@@ -81,3 +87,4 @@ This pipeline follows a **shift-left approach** by integrating testing (performa
 
 ## Pipeline Execution
 This pipeline automates the entire CI/CD workflow, ensuring code quality, performance testing, and resilience checks through chaos engineering.
+
