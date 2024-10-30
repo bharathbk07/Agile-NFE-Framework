@@ -185,13 +185,16 @@ pipeline {
                     def projectName = env.JOB_NAME // Name of the project/job
                     def buildNumber = env.BUILD_NUMBER // Jenkins build number
                     def timestamp = new Date().format("yyyy-MM-dd HH:mm:ss") // Current timestamp
+                    // Check the current build result, defaulting to 'SUCCESS' if it's null
+                    def buildResult = currentBuild.result ?: 'SUCCESS' // Default to 'SUCCESS' if null
+
 
                     // Prepare email content based on build result
                     def emailBodyContent
-                    def emailSubject = "${env.EMAIL_SUBJECT} - Build ${currentBuild.result}"
-                    echo "Current Build Status: ${currentBuild.result}."
+                    def emailSubject = "${env.EMAIL_SUBJECT} - Build ${buildResult}"
+                    echo "Current Build Status: ${buildResult}."
 
-                    if (currentBuild.result == 'SUCCESS') {
+                    if (buildResult == 'SUCCESS') {
                         emailBodyContent = env.SUCCESS_TEMPLATE
                     } else {
                         emailBodyContent = env.FAILURE_TEMPLATE
