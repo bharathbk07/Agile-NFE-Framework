@@ -1,4 +1,4 @@
-# Agile-NFE-Framework - Jenkins Pipeline Documentation
+# Agile-NFE Framework - Jenkins Pipeline Documentation
 
 This `Jenkinsfile` defines a CI/CD pipeline for automating the deployment of the application and ensuring it complies with non-functional engineering (NFE) standards. The pipeline covers key aspects such as **performance testing**, **static code scanning**, and **chaos engineering**. Once all stages are successfully completed, an email is triggered to stakeholders, indicating that the application is ready for deployment.
 
@@ -92,6 +92,38 @@ This pipeline follows a **shift-left approach** by integrating testing (performa
 1. Update `configfile.yml` with relevant configurations.
 2. Ensure all prerequisites are fulfilled.
 3. Run the pipeline from Jenkins and monitor the logs for each stage.
+
+## Install and Use Gremlin with Docker
+1. Store your Gremlin agent credentials as environment variables, for example
+```bash
+export GREMLIN_TEAM_ID=your_team_id
+```
+```bash
+export GREMLIN_TEAM_SECRET=your_secert_key
+```
+2. Next run the Gremlin Daemon in a Container.Use docker run to pull the official Gremlin Docker image and run the Gremlin daemon
+```bash
+docker run -d --net=host \
+  --cap-add=NET_ADMIN --cap-add=SYS_BOOT --cap-add=SYS_TIME \
+  --cap-add=KILL \
+  -v $PWD/var/lib/gremlin:/var/lib/gremlin \
+  -v $PWD/var/log/gremlin:/var/log/gremlin \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -e GREMLIN_TEAM_ID="$GREMLIN_TEAM_ID" \
+  -e GREMLIN_TEAM_SECRET="$GREMLIN_TEAM_SECRET" \
+  -e GREMLIN_CLIENT_TAGS="foo=bar" \
+  gremlin/gremlin daemon
+```
+3. Use `docker ps `to see all running Docker containers
+4. Jump into your Gremlin container with an interactive shell (replace b281e749ac33 with the real ID of your Gremlin container)
+```bash
+sudo docker exec -it b281e749ac33 /bin/bash
+```
+5. From within the container, check out the available attack types:
+```bash
+gremlin help attack-container
+```
+
 
 ## Troubleshooting
 - If Docker is not running, start it and retry.
