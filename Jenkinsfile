@@ -49,8 +49,8 @@ pipeline {
                     env.ATTACHMENTS = attachmentsList
 
                     // Load the HTML templates
-                    env.SUCCESS_TEMPLATE = readFile './Template/success.html' // Store success template in environment variable
-                    env.FAILURE_TEMPLATE = readFile './Template/failure.html' // Store failure template in environment variable
+                    env.SUCCESS_TEMPLATE = readFile 'Templates/success.html' // Store success template in environment variable
+                    env.FAILURE_TEMPLATE = readFile 'Templates/failure.html' // Store failure template in environment variable
 
                     echo "Loaded configuration successfully."
                 }
