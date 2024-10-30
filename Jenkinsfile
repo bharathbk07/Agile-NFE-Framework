@@ -141,9 +141,9 @@ pipeline {
                             script: '''
                                 export API_KEY=$GREMLIN_API_KEY
                                 export TEAM_ID=$GREMLIN_TEAM_ID
-                                curl -s -H "Content-Type: application/json;charset=utf-8" \
-                                    -H "Authorization: Key $API_KEY" \
-                                    "https://api.gremlin.com/v1/attacks/new?teamId=$TEAM_ID" \
+                                curl --location 'https://api.gremlin.com/v1/attacks/new?teamId=$TEAM_ID' \
+                                    --header 'Content-Type: application/json;charset=utf-8' \
+                                    --header 'Authorization: Key $API_KEY' \
                                     --data '{
                                         "command": {
                                             "type": "cpu",
@@ -151,7 +151,9 @@ pipeline {
                                         },
                                         "target": {
                                             "type": "Exact",
-                                            "hosts": { "ids": ["'${TARGET_IDENTIFIER}'"] }
+                                            "hosts": {
+                                                "ids": ["'${TARGET_IDENTIFIER}'"]
+                                            }
                                         }
                                     }' --compressed
                             ''',
