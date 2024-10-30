@@ -1,3 +1,9 @@
+# Configuration File for Performance Testing and Chaos Engineering
+
+# This YAML configuration file is utilized for configuring JMeter tests and chaos engineering experiments.
+# It includes parameters for JMeter test execution, chaos experiment settings, and project details.
+# Ensure to modify the paths and values according to your specific environment setup.
+
 tests:
   jmeter:
     enabled: true                       # Set to true to enable JMeter test
@@ -7,10 +13,10 @@ tests:
 
   chaos_experiment:
     enabled: true                       # Set to true to enable chaos experiment
-    TARGET_IDENTIFIER: '' # Host to target
-    CPU_LENGTH: 30                      # Duration of CPU attack
+    TARGET_IDENTIFIER: ''               # Host to target
+    CPU_LENGTH: 30                      # Duration of CPU attack (in seconds)
     CPU_CORE: 1                         # Number of cores to impact
-    CPU_CAPACITY: 100                   # Percentage of total CPU capacity to consume
+    CPU_CAPACITY: 100                   # Percentage of total CPU capacity to consume (0-100)
 
 project:
   github_repo: 'https://github.com/bharathbk07/wordsmith.git'  # Placeholder for GitHub repository name
