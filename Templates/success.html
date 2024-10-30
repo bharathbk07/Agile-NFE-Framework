@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Build Success</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 0.8em;
+            color: #777;
+        }
+        .image {
+            display: block; /* Centers the image block */
+            margin: 0 auto; /* Centers the image horizontally */
+            max-width: 20%; /* Reduce size further */
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Build Successful!</h1>
+        <img src="success.png" alt="Build Success" class="image">
+        <p>Dear User,</p>
+        <p>Your Jenkins build for <strong>${PROJECT_NAME}</strong> has completed successfully.</p>
+        <p>Build Details:</p>
+        <ul>
+            <li><strong>Build Number:</strong> ${BUILD_NUMBER}</li>
+            <li><strong>Status:</strong> Success</li>
+            <li><strong>Timestamp:</strong> ${TIMESTAMP}</li>
+        </ul>
+        <p>Thank you for using our CI/CD pipeline!</p>
+        <p class="footer">For any questions or issues, please reach out to the support team.</p>
+    </div>
+</body>
+</html>

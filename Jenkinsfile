@@ -17,6 +17,7 @@ pipeline {
         stage('Load Configuration') {
             steps {
                 script {
+                    // Load configuration from YAML file
                     def config = readYaml file: 'configfile.yml'
 
                     // Set environment variables from the YAML config
@@ -27,7 +28,7 @@ pipeline {
                     env.CHAOS_ENABLED = config.tests.chaos_experiment.enabled.toString()
                     
                     // Chaos experiment variables
-                    env.TARGET_IDENTIFIER = config.tests.chaos_experiment.TARGET_IDENTIFIER
+                    env.TARGET_IDENTIFIER = config.tests.chaos_experiment.TARGET_IDENTIFIER ?: ''
                     env.CPU_LENGTH = "${config.tests.chaos_experiment.CPU_LENGTH}"
                     env.CPU_CORE = "${config.tests.chaos_experiment.CPU_CORE}"
                     env.CPU_CAPACITY = "${config.tests.chaos_experiment.CPU_CAPACITY}"
@@ -35,6 +36,21 @@ pipeline {
                     // GitHub project details
                     env.GITHUB_REPO = config.project.github_repo
                     env.BRANCH_NAME = config.project.branch_name
+
+                    // Email settings
+                    env.SEND_EMAIL = config.email.sendEmail.toString()
+                    env.EMAIL_RECIPIENTS = config.email.recipients
+                    env.EMAIL_SENDER = config.email.sender
+                    env.EMAIL_SUBJECT = config.email.subject
+                    env.EMAIL_REPLY_TO = config.email.replyTo
+                    
+                    // Read attachments from config
+                    def attachmentsList = config.email.attachments.collect { it }.join(",")
+                    env.ATTACHMENTS = attachmentsList
+
+                    // Load the HTML templates
+                    env.SUCCESS_TEMPLATE = readFile './Template/success.html' // Store success template in environment variable
+                    env.FAILURE_TEMPLATE = readFile './Template/failure.html' // Store failure template in environment variable
 
                     echo "Loaded configuration successfully."
                 }
@@ -137,7 +153,7 @@ pipeline {
                 ]) {
                     script {
                         // Pass credentials as environment variables within the sh block
-                        ATTACK_ID = sh(script: """
+                        env.ATTACK_ID = sh(script: """
                             curl --location 'https://api.gremlin.com/v1/attacks/new?teamId=${GREMLIN_TEAM_ID}' \
                                     --header 'Content-Type: application/json;charset=utf-8' \
                                     --header 'Authorization: Key ${GREMLIN_API_KEY}' \
@@ -153,8 +169,53 @@ pipeline {
                             }' --compressed || true
                         """, returnStdout: true).trim()
 
-                        echo "Chaos experiment initiated. View details at: https://app.gremlin.com/attacks/${ATTACK_ID}"
+                        echo "Chaos experiment initiated. View details at: https://app.gremlin.com/attacks/${env.ATTACK_ID}"
                     }
+                }
+            }
+        }
+
+        stage('Send Email Notification') {
+            when {
+                expression { env.SEND_EMAIL == 'true' }
+            }
+            steps {
+                script {
+                    // Get values to replace in the templates
+                    def projectName = env.JOB_NAME // Name of the project/job
+                    def buildNumber = env.BUILD_NUMBER // Jenkins build number
+                    def timestamp = new Date().format("yyyy-MM-dd HH:mm:ss") // Current timestamp
+
+                    // Prepare email content based on build result
+                    def emailBodyContent
+                    def emailSubject = "${env.EMAIL_SUBJECT} - Build ${currentBuild.result}"
+
+                    if (currentBuild.result == 'SUCCESS') {
+                        emailBodyContent = env.SUCCESS_TEMPLATE
+                    } else {
+                        emailBodyContent = env.FAILURE_TEMPLATE
+                    }
+
+                    // Replace placeholders with actual values
+                    emailBodyContent = emailBodyContent
+                        .replace('${PROJECT_NAME}', projectName)
+                        .replace('${BUILD_NUMBER}', buildNumber)
+                        .replace('${TIMESTAMP}', timestamp)
+
+                    // Write the email body content to a temporary file
+                    def emailBodyFile = 'emailBodyContent.html'
+                    writeFile file: emailBodyFile, text: emailBodyContent
+
+                    // Send email using mail step
+                    /*emailext(
+                        to: env.EMAIL_RECIPIENTS,
+                        from: env.EMAIL_SENDER,
+                        subject: emailSubject,
+                        body: readFile(emailBodyFile),
+                        replyTo: env.EMAIL_REPLY_TO,
+                        attachLog: true,  // Attach build log
+                        attachments: "${env.ATTACHMENTS}"  // Attach specified files
+                    )*/
                 }
             }
         }
@@ -162,7 +223,7 @@ pipeline {
 
     post {
         always {
-            cleanWs()  // Clean up workspace after pipeline execution
+            //cleanWs()  // Clean up workspace after pipeline execution
             echo 'Pipeline execution completed.'
         }
         success {
