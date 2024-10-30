@@ -211,7 +211,7 @@ pipeline {
                     writeFile file: emailBodyFile, text: emailBodyContent
 
                     // Send email using mail step
-                    /*emailext(
+                    emailext(
                         to: env.EMAIL_RECIPIENTS,
                         from: env.EMAIL_SENDER,
                         subject: emailSubject,
@@ -219,7 +219,7 @@ pipeline {
                         replyTo: env.EMAIL_REPLY_TO,
                         attachLog: true,  // Attach build log
                         attachments: "${env.ATTACHMENTS}"  // Attach specified files
-                    )*/
+                    )
                 }
             }
         }
@@ -227,7 +227,7 @@ pipeline {
 
     post {
         always {
-            //cleanWs()  // Clean up workspace after pipeline execution
+            cleanWs()  // Clean up workspace after pipeline execution
             echo 'Pipeline execution completed.'
         }
         success {
