@@ -37,16 +37,18 @@ pipeline {
                     env.BRANCH_NAME = config.project.branch_name
 
                     echo "Loaded configuration successfully."
-
-                    // Initialize STAGE_RESULTS map
-                    currentBuild.stageResults = [:]
                 }
             }
             post {
                 always {
                     script {
-                        // Record the result of the stage
-                        currentBuild.stageResults['Load Configuration'] = currentBuild.currentResult ?: 'SUCCESS'
+                        // Initialize STAGE_RESULTS map if it doesn't exist
+                        if (!currentBuild.rawBuild.getAction(hudson.model.ParametersAction)) {
+                            currentBuild.rawBuild.addAction(new hudson.model.ParametersAction())
+                        }
+
+                        // Save stage result
+                        currentBuild.rawBuild.addAction(new hudson.model.StringParameterAction("Load Configuration", currentBuild.currentResult ?: 'SUCCESS'))
                     }
                 }
             }
@@ -64,8 +66,8 @@ pipeline {
             post {
                 always {
                     script {
-                        // Record the result of the stage
-                        currentBuild.stageResults['Clone Repository'] = currentBuild.currentResult ?: 'SUCCESS'
+                        // Save stage result
+                        currentBuild.rawBuild.addAction(new hudson.model.StringParameterAction("Clone Repository", currentBuild.currentResult ?: 'SUCCESS'))
                     }
                 }
             }
@@ -92,8 +94,8 @@ pipeline {
             post {
                 always {
                     script {
-                        // Record the result of the stage
-                        currentBuild.stageResults['Static Code Analysis (SonarQube)'] = currentBuild.currentResult ?: 'SUCCESS'
+                        // Save stage result
+                        currentBuild.rawBuild.addAction(new hudson.model.StringParameterAction("Static Code Analysis (SonarQube)", currentBuild.currentResult ?: 'SUCCESS'))
                     }
                 }
             }
@@ -124,8 +126,8 @@ pipeline {
             post {
                 always {
                     script {
-                        // Record the result of the stage
-                        currentBuild.stageResults['Validate and Deploy Docker'] = currentBuild.currentResult ?: 'SUCCESS'
+                        // Save stage result
+                        currentBuild.rawBuild.addAction(new hudson.model.StringParameterAction("Validate and Deploy Docker", currentBuild.currentResult ?: 'SUCCESS'))
                     }
                 }
             }
@@ -150,7 +152,7 @@ pipeline {
                     echo "Ready for JMeter testing."
 
                     // Run Performance Test
-                   
+                    
                     sh """
                     mkdir -p ${env.REPORT_DIR}
                     ${env.JMETER_HOME}/bin/jmeter -n -t ${env.TEST_PLAN} \
@@ -163,8 +165,8 @@ pipeline {
             post {
                 always {
                     script {
-                        // Record the result of the stage
-                        currentBuild.stageResults['JMeter Performance Testing'] = currentBuild.currentResult ?: 'SUCCESS'
+                        // Save stage result
+                        currentBuild.rawBuild.addAction(new hudson.model.StringParameterAction("JMeter Performance Testing", currentBuild.currentResult ?: 'SUCCESS'))
                     }
                 }
             }
@@ -203,8 +205,8 @@ pipeline {
             post {
                 always {
                     script {
-                        // Record the result of the stage
-                        currentBuild.stageResults['Run Chaos Experiment'] = currentBuild.currentResult ?: 'SUCCESS'
+                        // Save stage result
+                        currentBuild.rawBuild.addAction(new hudson.model.StringParameterAction("Run Chaos Experiment", currentBuild.currentResult ?: 'SUCCESS'))
                     }
                 }
             }
@@ -216,7 +218,7 @@ pipeline {
             script {
                 // Create JSON file with stage results
                 def jsonOutput = groovy.json.JsonOutput.toJson([
-                    'stageResults': currentBuild.stageResults,
+                    'stageResults': currentBuild.rawBuild.getActions(hudson.model.StringParameterAction).collectEntries { [it.getName(), it.getValue()] },
                     'pipelineStatus': currentBuild.currentResult ?: 'SUCCESS'
                 ])
                 writeFile file: "${env.REPORT_DIR}/pipeline_status.json", text: jsonOutput
