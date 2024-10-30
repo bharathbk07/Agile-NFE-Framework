@@ -7,7 +7,6 @@ pipeline {
         PROJECT_DIR = 'project_source_code'  // Directory for cloning and scanning
         ATTACK_ID = ''
         SONARQUBE_URL = 'http://localhost:9000'
-        // Do not initialize STAGE_RESULTS here; instead, we will do it in the script section
     }
 
     tools {
@@ -39,17 +38,15 @@ pipeline {
 
                     echo "Loaded configuration successfully."
 
-                    // Initialize STAGE_RESULTS map here
-                    if (!env.STAGE_RESULTS) {
-                        env.STAGE_RESULTS = [:]
-                    }
+                    // Initialize STAGE_RESULTS map
+                    currentBuild.stageResults = [:]
                 }
             }
             post {
                 always {
                     script {
                         // Record the result of the stage
-                        env.STAGE_RESULTS['Load Configuration'] = currentBuild.currentResult ?: 'SUCCESS'
+                        currentBuild.stageResults['Load Configuration'] = currentBuild.currentResult ?: 'SUCCESS'
                     }
                 }
             }
@@ -68,7 +65,7 @@ pipeline {
                 always {
                     script {
                         // Record the result of the stage
-                        env.STAGE_RESULTS['Clone Repository'] = currentBuild.currentResult ?: 'SUCCESS'
+                        currentBuild.stageResults['Clone Repository'] = currentBuild.currentResult ?: 'SUCCESS'
                     }
                 }
             }
@@ -96,7 +93,7 @@ pipeline {
                 always {
                     script {
                         // Record the result of the stage
-                        env.STAGE_RESULTS['Static Code Analysis (SonarQube)'] = currentBuild.currentResult ?: 'SUCCESS'
+                        currentBuild.stageResults['Static Code Analysis (SonarQube)'] = currentBuild.currentResult ?: 'SUCCESS'
                     }
                 }
             }
@@ -128,7 +125,7 @@ pipeline {
                 always {
                     script {
                         // Record the result of the stage
-                        env.STAGE_RESULTS['Validate and Deploy Docker'] = currentBuild.currentResult ?: 'SUCCESS'
+                        currentBuild.stageResults['Validate and Deploy Docker'] = currentBuild.currentResult ?: 'SUCCESS'
                     }
                 }
             }
@@ -152,7 +149,8 @@ pipeline {
                     }
                     echo "Ready for JMeter testing."
 
-                    // Run Performance Test                  
+                    // Run Performance Test
+                   
                     sh """
                     mkdir -p ${env.REPORT_DIR}
                     ${env.JMETER_HOME}/bin/jmeter -n -t ${env.TEST_PLAN} \
@@ -166,7 +164,7 @@ pipeline {
                 always {
                     script {
                         // Record the result of the stage
-                        env.STAGE_RESULTS['JMeter Performance Testing'] = currentBuild.currentResult ?: 'SUCCESS'
+                        currentBuild.stageResults['JMeter Performance Testing'] = currentBuild.currentResult ?: 'SUCCESS'
                     }
                 }
             }
@@ -206,7 +204,7 @@ pipeline {
                 always {
                     script {
                         // Record the result of the stage
-                        env.STAGE_RESULTS['Run Chaos Experiment'] = currentBuild.currentResult ?: 'SUCCESS'
+                        currentBuild.stageResults['Run Chaos Experiment'] = currentBuild.currentResult ?: 'SUCCESS'
                     }
                 }
             }
@@ -218,7 +216,7 @@ pipeline {
             script {
                 // Create JSON file with stage results
                 def jsonOutput = groovy.json.JsonOutput.toJson([
-                    'stageResults': env.STAGE_RESULTS,
+                    'stageResults': currentBuild.stageResults,
                     'pipelineStatus': currentBuild.currentResult ?: 'SUCCESS'
                 ])
                 writeFile file: "${env.REPORT_DIR}/pipeline_status.json", text: jsonOutput
