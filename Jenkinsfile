@@ -7,6 +7,7 @@ pipeline {
         PROJECT_DIR = 'project_source_code'  // Directory for cloning and scanning
         ATTACK_ID = ''
         SONARQUBE_URL = 'http://localhost:9000'
+        STAGE_RESULTS = [:]  // Map to hold stage results
     }
 
     tools {
@@ -25,7 +26,7 @@ pipeline {
                     env.REPORT_DIR = config.tests.jmeter.REPORT_DIR
                     env.JMETER_ENABLED = config.tests.jmeter.enabled.toString()
                     env.CHAOS_ENABLED = config.tests.chaos_experiment.enabled.toString()
-                    
+
                     // Chaos experiment variables
                     env.TARGET_IDENTIFIER = config.tests.chaos_experiment.TARGET_IDENTIFIER
                     env.CPU_LENGTH = "${config.tests.chaos_experiment.CPU_LENGTH}"
@@ -39,6 +40,12 @@ pipeline {
                     echo "Loaded configuration successfully."
                 }
             }
+            post {
+                always {
+                    // Record the result of the stage
+                    STAGE_RESULTS['Load Configuration'] = currentBuild.currentResult ?: 'SUCCESS'
+                }
+            }
         }
 
         stage('Clone Repository') {
@@ -48,6 +55,12 @@ pipeline {
                     dir(env.PROJECT_DIR) {
                         git(url: "${env.GITHUB_REPO}", branch: "${env.BRANCH_NAME}")
                     }
+                }
+            }
+            post {
+                always {
+                    // Record the result of the stage
+                    STAGE_RESULTS['Clone Repository'] = currentBuild.currentResult ?: 'SUCCESS'
                 }
             }
         }
@@ -68,6 +81,12 @@ pipeline {
                             }
                         }
                     }
+                }
+            }
+            post {
+                always {
+                    // Record the result of the stage
+                    STAGE_RESULTS['Static Code Analysis (SonarQube)'] = currentBuild.currentResult ?: 'SUCCESS'
                 }
             }
         }
@@ -92,6 +111,12 @@ pipeline {
                             error "No containers are running. Please check your Docker setup."
                         }
                     }
+                }
+            }
+            post {
+                always {
+                    // Record the result of the stage
+                    STAGE_RESULTS['Validate and Deploy Docker'] = currentBuild.currentResult ?: 'SUCCESS'
                 }
             }
         }
@@ -122,6 +147,12 @@ pipeline {
                         -e -o ${env.REPORT_DIR}/html-report
                     """
                     echo "Performance test completed. Reports generated at ${env.REPORT_DIR}/html-report."
+                }
+            }
+            post {
+                always {
+                    // Record the result of the stage
+                    STAGE_RESULTS['JMeter Performance Testing'] = currentBuild.currentResult ?: 'SUCCESS'
                 }
             }
         }
@@ -156,11 +187,24 @@ pipeline {
                     }
                 }
             }
+            post {
+                always {
+                    // Record the result of the stage
+                    STAGE_RESULTS['Run Chaos Experiment'] = currentBuild.currentResult ?: 'SUCCESS'
+                }
+            }
         }
     }
 
     post {
         always {
+            // Create JSON file with stage results
+            def jsonOutput = groovy.json.JsonOutput.toJson([
+                'stageResults': STAGE_RESULTS,
+                'pipelineStatus': currentBuild.currentResult ?: 'SUCCESS'
+            ])
+            writeFile file: "${env.REPORT_DIR}/pipeline_status.json", text: jsonOutput
+            
             cleanWs()  // Clean up workspace after pipeline execution
             echo 'Pipeline execution completed.'
         }
