@@ -136,21 +136,21 @@ pipeline {
                     string(credentialsId: 'GREMLIN_TEAM_ID', variable: 'GREMLIN_TEAM_ID')
                 ]) {
                     script {
-                        ATTACK_ID = sh(script: """
-                            curl -s -H 'Content-Type: application/json;charset=utf-8' \
-                            -H 'Authorization: Key ${GREMLIN_API_KEY}' \
-                            https://api.gremlin.com/v1/attacks/new?teamId=${GREMLIN_TEAM_ID} \
-                            --data '{
-                                "command": {
-                                    "type": "cpu",
-                                    "args": ["-c", "${env.CPU_CORE}", "-l", "${env.CPU_LENGTH}", "-p", "${env.CPU_CAPACITY}"]
-                                },
-                                "target": {
-                                    "type": "Exact",
-                                    "hosts": { "ids": ["${env.TARGET_IDENTIFIER}"] }
-                                }
-                            }' --compressed
-                        """, returnStdout: true).trim()
+                        def attackCommand = """curl -s -H 'Content-Type: application/json;charset=utf-8' \
+                        -H 'Authorization: Key $GREMLIN_API_KEY' \
+                        https://api.gremlin.com/v1/attacks/new?teamId=$GREMLIN_TEAM_ID \
+                        --data '{
+                            "command": {
+                                "type": "cpu",
+                                "args": ["-c", "${env.CPU_CORE}", "-l", "${env.CPU_LENGTH}", "-p", "${env.CPU_CAPACITY}"]
+                            },
+                            "target": {
+                                "type": "Exact",
+                                "hosts": { "ids": ["${env.TARGET_IDENTIFIER}"] }
+                            }
+                        }' --compressed"""
+
+                        ATTACK_ID = sh(script: attackCommand, returnStdout: true).trim()
 
                         echo "Chaos experiment initiated. View details at: https://app.gremlin.com/attacks/${ATTACK_ID}"
                     }
