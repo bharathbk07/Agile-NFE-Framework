@@ -2,10 +2,10 @@
 
 This `Jenkinsfile` defines a CI/CD pipeline for automating the deployment of the application and ensuring it complies with non-functional engineering (NFE) standards. The pipeline covers key aspects such as **performance testing**, **static code scanning**, and **chaos engineering**. Once all stages are successfully completed, an email is triggered to stakeholders, indicating that the application is ready for deployment.
 
-![Jenkins Screenshot](Screenshot/Jenkins.png)
+![Jenkins Screenshot](Screenshot/Jenkins.png)<br>
 ![Docker Screenshot](Screenshot/docker.png)
 ![SonarQube Screenshot](Screenshot/SonarQube.png)
-![Datadog Jmeter Screenshot](Screenshot/Datadog Jmeter.png)
+![Datadog Jmeter Screenshot](Screenshot/DatadogJmeter.png)
 ![Application Screenshot](Screenshot/application.png)
 
 ## Shift-Left or Shift-Right Approach?
