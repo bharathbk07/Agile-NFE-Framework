@@ -115,8 +115,8 @@ pipeline {
                     echo "Ready for JMeter testing."
 
                     // Run Performance Test
-                    mkdir -p ${env.REPORT_DIR}
                     sh """
+                    mkdir -p ${env.REPORT_DIR}
                     ${env.JMETER_HOME}/bin/jmeter -n -t ${env.TEST_PLAN} \
                         -l ${env.REPORT_DIR}/results.jtl \
                         -e -o ${env.REPORT_DIR}/html-report
