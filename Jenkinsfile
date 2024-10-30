@@ -69,7 +69,7 @@ pipeline {
                 withSonarQubeEnv('Wordsmith') {
                     withCredentials([string(credentialsId: 'SonarQube_Wordsmith', variable: 'SONAR_TOKEN')]) {
                         script {
-                            dir(env.PROJECT_DIR) {
+                            dir("${env.PROJECT_DIR}/api") {
                                 sh """
                                 mvn clean verify sonar:sonar \
                                   -Dsonar.projectKey=Wordsmith \
