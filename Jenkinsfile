@@ -41,18 +41,6 @@ pipeline {
             }
         }
 
-        stage('Validate Infrastructure') {
-            steps {
-                script {
-                    def dockerRunning = sh(script: "docker info", returnStatus: true) == 0
-                    if (!dockerRunning) {
-                        error "Docker is not running. Please start Docker and retry."
-                    }
-                    echo "Docker is running."
-                }
-            }
-        }
-
         stage('Clone Repository') {
             steps {
                 script {
@@ -84,9 +72,17 @@ pipeline {
             }
         }
 
-        stage('Build and Deploy with Docker Compose') {
+        stage('Validate and Deploy Docker') {
             steps {
                 script {
+                    // Validate Docker is running
+                    def dockerRunning = sh(script: "docker info", returnStatus: true) == 0
+                    if (!dockerRunning) {
+                        error "Docker is not running. Please start Docker and retry."
+                    }
+                    echo "Docker is running."
+
+                    // Build and Deploy with Docker Compose
                     dir(env.PROJECT_DIR) {
                         sh "docker compose up --build -d"
                         def runningContainers = sh(script: "docker ps --format '{{.Names}}'", returnStdout: true).trim()
@@ -100,7 +96,7 @@ pipeline {
             }
         }
 
-        stage('Performance Test Setup') {
+        stage('JMeter Performance Testing') {
             when {
                 expression { env.JMETER_ENABLED == 'true' }
             }
@@ -117,18 +113,10 @@ pipeline {
                         sh "rm -rf ${env.REPORT_DIR}"
                     }
                     echo "Ready for JMeter testing."
-                }
-            }
-        }
 
-        stage('Run Performance Test (JMeter)') {
-            when {
-                expression { env.JMETER_ENABLED == 'true' }
-            }
-            steps {
-                script {
-                    sh """
+                    // Run Performance Test
                     mkdir -p ${env.REPORT_DIR}
+                    sh """
                     ${env.JMETER_HOME}/bin/jmeter -n -t ${env.TEST_PLAN} \
                         -l ${env.REPORT_DIR}/results.jtl \
                         -e -o ${env.REPORT_DIR}/html-report
