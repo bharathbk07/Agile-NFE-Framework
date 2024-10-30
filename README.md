@@ -133,3 +133,9 @@ gremlin help attack-container
 ## Pipeline Execution
 This pipeline automates the entire CI/CD workflow, ensuring code quality, performance testing, and resilience checks through chaos engineering.
 
+## Reference
+
+ - [DataDog](https://app.datadoghq.com/)
+ - [Installing SonarQube in Docker](https://medium.com/@HoussemDellai/setup-sonarqube-in-a-docker-container-3c3908b624df)
+ - [Installing Jenkins in Docker](https://octopus.com/blog/jenkins-docker-install-guide)
+ - [Gremlin Trial Account](https://www.gremlin.com/trial)
