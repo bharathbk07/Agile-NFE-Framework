@@ -20,6 +20,11 @@ This `Jenkinsfile` defines a CI/CD pipeline for automating the deployment of the
 ![Application Screenshot](Screenshot/application.png)
 *Screenshot of the application user interface.*
 
+![Jenkins Build Success Mail](Screenshot/success.png)
+*Screenshot of the jenkins build success mail.*
+
+![Jenkins Build Failure Mail](Screenshot/failure.png)
+*Screenshot of the jenkins build failure mail.*
 
 ## Shift-Left or Shift-Right Approach?
 This pipeline follows a **shift-left approach** by integrating testing (performance and static code analysis) early in the CI/CD process. Shift-left practices help catch issues earlier in the development cycle, minimizing risks and reducing the cost of fixing defects. Additionally, chaos engineering introduces a **shift-right component** by validating the resilience of the application in production-like scenarios, ensuring that the system behaves reliably under real-world conditions.
