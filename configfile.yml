@@ -23,7 +23,7 @@ project:
   branch_name: 'main'         # Placeholder for branch name
 
 email:
-  sendEmail: false               # Set to true to enable email notifications
+  sendEmail: true               # Set to true to enable email notifications
   recipients: "mkumarbharath50@gmail.com"  # List of email recipients
   sender: "mkumarbharath50@gmail.com"   # Sender's email address
   subject: "Build Notification"   # Subject for the email
