@@ -17,6 +17,12 @@ This `Jenkinsfile` defines a CI/CD pipeline for automating the deployment of the
 ![Datadog JMeter Screenshot](Screenshot/DatadogContainer.png)
 *Datadog monitoring dashboard visualizing application containers.*
 
+![Datadog Jenkins Screenshot](Screenshot/JenkinsDatadog.png)
+*Datadog monitoring dashboard visualizing Jenkins.*
+
+![Gremlin Dashboard](Screenshot/Gremlin.png)
+*Gremlin dashboard showing experiments.*
+
 ![Application Screenshot](Screenshot/application.png)
 *Screenshot of the application user interface.*
 
