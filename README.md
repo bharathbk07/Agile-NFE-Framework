@@ -3,6 +3,7 @@
 This `Jenkinsfile` defines a CI/CD pipeline for automating the deployment of the application and ensuring it complies with non-functional engineering (NFE) standards. The pipeline covers key aspects such as **performance testing**, **static code scanning**, and **chaos engineering**. Once all stages are successfully completed, an email is triggered to stakeholders, indicating that the application is ready for deployment.
 
 ![Jenkins Screenshot](Screenshot/Jenkins.png)
+![Jenkins Failure Screenshot](Screenshot/Jenkinsfailure.png)
 *Jenkins dashboard displaying the CI/CD pipeline execution status.*
 
 ![Docker Screenshot](Screenshot/docker.png)
