@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Build Failure</title>
     <style>
-        body {
+       body {
             font-family: Arial, Helvetica, sans-serif;
             line-height: 1.6;
             background-color: #f4f4f4;
@@ -20,6 +20,7 @@
         }
         h1 {
             color: #f44336;
+            text-align: center; /* Center heading text only */
         }
         .footer {
             margin-top: 20px;
@@ -31,6 +32,17 @@
             margin: 0 auto; /* Centers the image horizontally */
             max-width: 20%; /* Reduce size further */
             height: auto;
+        }
+        .iframe-container {
+            display: flex; /* Use flexbox for layout */
+            justify-content: center; /* Center the iframes horizontally */
+            margin: 20px 0; /* Add some vertical spacing */
+        }
+        iframe {
+            margin: 0 10px; /* Add horizontal spacing between iframes */
+            border: none; /* Remove default border */
+            width: 600px; /* Fixed width for the iframes */
+            height: 300px; /* Fixed height for the iframes */
         }
     </style>
 </head>
@@ -46,6 +58,11 @@
             <li><strong>Status:</strong> Failure</li>
             <li><strong>Timestamp:</strong> ${TIMESTAMP}</li>
         </ul>
+        <h1>Jmeter Status</h1>
+        <div class="iframe-container">
+            <iframe src="https://app.datadoghq.com/graph/embed?token=99d7bec2f1d30491543dcd3723ba5bab14909a03b6c06ad3e30793278ba23f78&height=300&width=600&legend=true"></iframe>
+            <iframe src="https://app.datadoghq.com/graph/embed?token=b6eeb3b33880bf3b0353436fa1cc5c590e01cf2707cad6174be4db3a9d7c206e&height=300&width=600&legend=true"></iframe>
+        </div>
         <p>Please check the logs for more information on the failure and take necessary action.</p>
         <p class="footer">For assistance, please reach out to the support team.</p>
     </div>

@@ -260,7 +260,7 @@ pipeline {
 
     post {
         always {
-            cleanWs()  // Clean up workspace after pipeline execution
+            //cleanWs()  // Clean up workspace after pipeline execution
             echo 'Pipeline execution completed.'
         }
         success {
