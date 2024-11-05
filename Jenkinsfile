@@ -112,7 +112,7 @@ pipeline {
             }
         }
 
-        stage('Health Check') {
+        stage('Health Check and API Validation') {
             steps {
                 script {
                     // List of containers to check, using the environment variable
@@ -140,6 +140,16 @@ pipeline {
                         error "The following containers are not running: ${notRunning.join(', ')}"
                     } else {
                         echo "All specified containers are running."
+
+                        // Proceed to check API health if all containers are running
+                        def apiResponse = sh(script: "curl -s http://localhost:8080/words/noun?n=1", returnStdout: true).trim()
+
+                        // Check if the API response contains the word "words"
+                        if (apiResponse.contains("words")) {
+                            echo "Application is working."
+                        } else {
+                            error "Application is not working. Terminating the process."
+                        }
                     }
                 }
             }
