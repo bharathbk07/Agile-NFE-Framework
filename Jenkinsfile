@@ -112,6 +112,39 @@ pipeline {
             }
         }
 
+        stage('Health Check') {
+            steps {
+                script {
+                    // List of containers to check, using the environment variable
+                    def containers = [
+                        "${env.PROJECT_DIR}-api-4",
+                        "${env.PROJECT_DIR}-api-5",
+                        "${env.PROJECT_DIR}-api-2",
+                        "${env.PROJECT_DIR}-db-1",
+                        "${env.PROJECT_DIR}-api-3",
+                        "${env.PROJECT_DIR}-api-1",
+                        "${env.PROJECT_DIR}-web-1"
+                    ]
+
+                    // Check the status of each container
+                    def notRunning = []
+                    containers.each { container ->
+                        def status = sh(script: "docker inspect --format='{{.State.Status}}' ${container} 2>/dev/null", returnStdout: true).trim()
+                        if (status != 'running') {
+                            notRunning.add(container)
+                        }
+                    }
+
+                    // If any container is not running, fail the job
+                    if (notRunning) {
+                        error "The following containers are not running: ${notRunning.join(', ')}"
+                    } else {
+                        echo "All specified containers are running."
+                    }
+                }
+            }
+        }
+
         stage('Performance Testing (JMeter)') {
             when {
                 expression { env.JMETER_ENABLED == 'true' }
