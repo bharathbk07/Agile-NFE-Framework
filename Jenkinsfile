@@ -217,13 +217,11 @@ pipeline {
                 }
             }
         }
+    }
 
-        stage('Send Email Notification') {
-            when {
-                expression { env.SEND_EMAIL == 'true' }
-            }
-            steps {
-                script {
+    post {
+        always {
+            script {
                     // Get values to replace in the templates
                     def projectName = env.JOB_NAME // Name of the project/job
                     def buildNumber = env.BUILD_NUMBER // Jenkins build number
@@ -264,12 +262,6 @@ pipeline {
                         attachments: "${env.ATTACHMENTS}"  // Attach specified files
                     )
                 }
-            }
-        }
-    }
-
-    post {
-        always {
             //cleanWs()  // Clean up workspace after pipeline execution
             echo 'Pipeline execution completed.'
         }
