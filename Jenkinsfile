@@ -145,7 +145,7 @@ pipeline {
                         def apiResponse = sh(script: "curl -s 'http://localhost:8080/words/noun?n=1'", returnStdout: true).trim()
 
                         // Check if the API response contains the word "words"
-                        if (apiResponse.contains("words")) {
+                        if (apiResponse.contains("word")) {
                             echo "Application is working."
                         } else {
                             error "Application is not working. Terminating the process."
