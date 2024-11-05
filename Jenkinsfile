@@ -14,7 +14,7 @@ pipeline {
     }
 
     stages {
-        stage('Load Configuration') {
+        stage('Load Job Configuration') {
             steps {
                 script {
                     // Load configuration from YAML file
@@ -112,7 +112,7 @@ pipeline {
             }
         }
 
-        stage('JMeter Performance Testing') {
+        stage('Performance Testing (JMeter)') {
             when {
                 expression { env.JMETER_ENABLED == 'true' }
             }
@@ -142,7 +142,7 @@ pipeline {
             }
         }
 
-        stage('Run Chaos Experiment') {
+        stage('Chaos Testing (Gremlin)') {
             when {
                 expression { env.CHAOS_ENABLED == 'true' }
             }

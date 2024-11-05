@@ -12,7 +12,7 @@ tests:
     REPORT_DIR: '/Users/bharathkumarm/Docker/JmeterScript/jmeter-report'         # Directory for results
 
   chaos_experiment:
-    enabled: true                       # Set to true to enable chaos experiment
+    enabled: false                       # Set to true to enable chaos experiment
     TARGET_IDENTIFIER: ''               # Host to target
     CPU_LENGTH: 60                      # Duration of CPU attack (in seconds)
     CPU_CORE: 1                         # Number of cores to impact
