@@ -13,7 +13,7 @@ tests:
 
   chaos_experiment:
     enabled: true                       # Set to true to enable chaos experiment
-    TARGET_IDENTIFIER: ''               # Host to target
+    TARGET_IDENTIFIER: '192.168.65.3'               # Host to target
     CPU_LENGTH: 60                      # Duration of CPU attack (in seconds)
     CPU_CORE: 1                         # Number of cores to impact
     CPU_CAPACITY: 100                   # Percentage of total CPU capacity to consume (0-100)
