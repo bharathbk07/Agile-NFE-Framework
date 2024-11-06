@@ -228,7 +228,7 @@ pipeline {
 
                     // Prepare email content based on build result
                     def emailBodyContent
-                    def emailSubject = "${env.EMAIL_SUBJECT} - Build ${buildResult}"
+                    def emailSubject = "${env.EMAIL_SUBJECT} - Build ${buildResult} for build number ${buildNumber}"
                     echo "Current Build Status: ${buildResult}."
 
                     if (buildResult == 'SUCCESS') {
