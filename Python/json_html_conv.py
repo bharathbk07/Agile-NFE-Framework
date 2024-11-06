@@ -49,6 +49,7 @@ def main():
 
     # Append 'statistics.json' to the folder path
     json_file_path = os.path.join(args.json_file_path, "statistics.json")
+    print("File Path",json_file_path)
     success_html = './Templates/success.html'
 
     # Check if the file exists
