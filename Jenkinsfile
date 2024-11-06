@@ -236,6 +236,7 @@ pipeline {
                     echo "Current Build Status: ${buildResult}."
 
                     if (buildResult == 'SUCCESS') {
+                        sh "python ./Python/json_html_conv.py ${env.REPORT_DIR}"
                         emailBodyContent = env.SUCCESS_TEMPLATE
                     } else {
                         emailBodyContent = env.FAILURE_TEMPLATE

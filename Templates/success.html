@@ -13,7 +13,7 @@
             color: #333;
         }
         .container {
-            background: white;
+            background: rgb(254, 254, 254);
             padding: 20px;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
@@ -40,13 +40,39 @@
         }
         .iframe-container:not(:last-child) {
             margin-bottom: 40px; /* Adds spacing between each iframe container */
-            margin-left: 20px;
         }
         iframe {
-            margin: 0 10px; /* Add horizontal spacing between iframes */
             border: none; /* Remove default border */
             width: 600px; /* Fixed width for the iframes */
             height: 300px; /* Fixed height for the iframes */
+        }
+        /* Table styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        td {
+            color: #555;
+        }
+        .table-container {
+            overflow-x: auto; /* Enable horizontal scroll on smaller screens */
         }
     </style>
 </head>
@@ -67,6 +93,9 @@
             <iframe src="https://app.datadoghq.com/graph/embed?token=99d7bec2f1d30491543dcd3723ba5bab14909a03b6c06ad3e30793278ba23f78&height=300&width=600&legend=true"></iframe>
             <iframe src="https://app.datadoghq.com/graph/embed?token=b6eeb3b33880bf3b0353436fa1cc5c590e01cf2707cad6174be4db3a9d7c206e&height=300&width=600&legend=true"></iframe>
             <iframe src="https://app.datadoghq.com/graph/embed?token=db1b421658ae939864c957b24f96bc39abbb2e5c8d2fae9b60bafdec4a3ee8fc&height=300&width=600&legend=true"></iframe>
+        </div>
+        <div class="iframe-container table-container">
+            ${JMETER_TXN_TABLE}
         </div>
         <h1>Env Status</h1>
         <div class="iframe-container">
