@@ -30,5 +30,5 @@ email:
   replyTo: "mkumarbharath50@gmail.com"  # Reply-To email address
   attachments:
     - "*.log"      # Replace with actual paths to files to attach
-    - "./Templates/attachment.html"
+    - "*.html"
 

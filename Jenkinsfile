@@ -233,6 +233,7 @@ pipeline {
 
                     if (buildResult == 'SUCCESS') {
                         sh "python ./Python/json_html_conv.py ${env.REPORT_DIR}/html-report"
+                        sh "mv ./Templates/attachment.html attachment.html"
                         emailBodyContent = readFile 'Templates/success.html' // Store success template in environment variable
                     } else {
                         emailBodyContent = readFile 'Templates/failure.html' // Store failure template in environment variable
