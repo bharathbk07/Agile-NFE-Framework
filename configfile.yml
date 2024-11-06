@@ -29,6 +29,5 @@ email:
   subject: "Build Notification"   # Subject for the email
   replyTo: "mkumarbharath50@gmail.com"  # Reply-To email address
   attachments:
-    - "*.html"      # Replace with actual paths to files to attach
-    - "*.log"
+    - "attachment.html"      # Replace with actual paths to files to attach
 
