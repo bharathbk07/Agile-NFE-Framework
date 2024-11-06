@@ -47,7 +47,7 @@ pipeline {
                     // Read attachments from config
                     def attachmentsList = config.email.attachments.collect { it }.join(",")
                     env.ATTACHMENTS = attachmentsList
-
+                    echo "Attachments List ${env.ATTACHMENTS}"
                     echo "Loaded configuration successfully."
                 }
             }
