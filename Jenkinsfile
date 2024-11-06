@@ -48,10 +48,6 @@ pipeline {
                     def attachmentsList = config.email.attachments.collect { it }.join(",")
                     env.ATTACHMENTS = attachmentsList
 
-                    // Load the HTML templates
-                    env.SUCCESS_TEMPLATE = readFile 'Templates/success.html' // Store success template in environment variable
-                    env.FAILURE_TEMPLATE = readFile 'Templates/failure.html' // Store failure template in environment variable
-
                     echo "Loaded configuration successfully."
                 }
             }
@@ -237,9 +233,9 @@ pipeline {
 
                     if (buildResult == 'SUCCESS') {
                         sh "python ./Python/json_html_conv.py ${env.REPORT_DIR}/html-report"
-                        emailBodyContent = env.SUCCESS_TEMPLATE
+                        emailBodyContent = readFile 'Templates/success.html' // Store success template in environment variable
                     } else {
-                        emailBodyContent = env.FAILURE_TEMPLATE
+                        emailBodyContent = readFile 'Templates/failure.html' // Store failure template in environment variable
                     }
 
                     // Replace placeholders with actual values
