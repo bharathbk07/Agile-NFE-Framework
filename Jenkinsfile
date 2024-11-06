@@ -257,7 +257,7 @@ pipeline {
                         body: readFile(emailBodyFile),
                         replyTo: env.EMAIL_REPLY_TO,
                         attachLog: true,  // Attach build log
-                        attachments: "${env.ATTACHMENTS}"  // Attach specified files
+                        attachmentsPattern: "${env.ATTACHMENTS}"  // Attach specified files
                     )
                 }
             cleanWs()  // Clean up workspace after pipeline execution
