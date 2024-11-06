@@ -50,7 +50,7 @@ def main():
     # Append 'statistics.json' to the folder path
     json_file_path = os.path.join(args.json_file_path, "statistics.json")
     print("File Path",json_file_path)
-    success_html = './Templates/success.html'
+    success_html_path = './Templates/success.html'
 
     # Check if the file exists
     if not os.path.isfile(json_file_path):
@@ -66,14 +66,14 @@ def main():
         html_table = json_to_html_table(json_data)
 
         # Read success.html, replace placeholder, and write output to the same file
-        with open(success_html, "r") as file:
+        with open(success_html_path, "r") as file:
             success_html = file.read()
 
         # Replace placeholder with generated HTML table
         updated_html = success_html.replace("${JMETER_TXN_TABLE}", html_table)
 
         # Save the modified HTML content back to success.html
-        with open(success_html, "w") as file:
+        with open(success_html_path, "w") as file:
             file.write(updated_html)
 
         print("HTML table inserted into 'success.html'")
