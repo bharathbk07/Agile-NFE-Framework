@@ -156,7 +156,7 @@ pipeline {
             }
         }
 
-        stage('Run Lighthouse Audit') {
+        stage('Front-End Performance and Usability Testing (Lighthouse)') {
             when {
                 expression { env.LIGHTHOUSE_RUN == 'true' }
             }
