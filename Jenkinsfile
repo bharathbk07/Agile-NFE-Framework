@@ -46,7 +46,7 @@ pipeline {
                     env.EMAIL_REPLY_TO = config.email.replyTo
 
                     // Set environment variables based on config
-                    env.LIGHTHOUSE_RUN = config.tests.lighthouse.run.toString()
+                    env.LIGHTHOUSE_RUN = config.tests.lighthouse.enabled.toString()
                     env.LIGHTHOUSE_URL = config.tests.lighthouse.url
                     
                     // Read attachments from config
