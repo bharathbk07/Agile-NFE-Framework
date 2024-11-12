@@ -19,7 +19,7 @@ tests:
     CPU_CAPACITY: 100                   # Percentage of total CPU capacity to consume (0-100)
   
   lighthouse:
-    enabled: false  # Set to true if you want to run Lighthouse. Prompt the user to modify this if needed.
+    enabled: true  # Set to true if you want to run Lighthouse. Prompt the user to modify this if needed.
     url: "https://example.com"  # Replace with the application URL
 
 project:
