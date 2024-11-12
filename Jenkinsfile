@@ -7,6 +7,7 @@ pipeline {
         PROJECT_DIR = 'project_source_code'  // Directory for cloning and scanning
         ATTACK_ID = ''
         SONARQUBE_URL = 'http://localhost:9000'
+        PATH = "${tool 'Nodejs'}/bin:${env.PATH}"  // Set PATH to include the Node.js bin folder from the NodeJS installation
     }
 
     tools {
@@ -43,6 +44,10 @@ pipeline {
                     env.EMAIL_SENDER = config.email.sender
                     env.EMAIL_SUBJECT = config.email.subject
                     env.EMAIL_REPLY_TO = config.email.replyTo
+
+                    // Set environment variables based on config
+                    env.LIGHTHOUSE_RUN = config.tests.lighthouse.run.toString()
+                    env.LIGHTHOUSE_URL = config.tests.lighthouse.url
                     
                     // Read attachments from config
                     def attachmentsList = config.email.attachments.collect { it }.join(",")
@@ -148,6 +153,21 @@ pipeline {
                         }
                     }
                 }
+            }
+        }
+
+        stage('Run Lighthouse Audit') {
+            when {
+                expression { env.LIGHTHOUSE_RUN == 'true' }
+            }
+            steps {
+                sh """
+                lighthouse ${env.LIGHTHOUSE_URL} \
+                    --output html \
+                    --output-path lighthouse_report.html \
+                    --no-enable-error-reporting \
+                    --chrome-flags="--headless"
+                """
             }
         }
 
