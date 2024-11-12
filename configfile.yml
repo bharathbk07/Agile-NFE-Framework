@@ -20,7 +20,7 @@ tests:
   
   lighthouse:
     enabled: true  # Set to true if you want to run Lighthouse. Prompt the user to modify this if needed.
-    url: "https://example.com"  # Replace with the application URL
+    url: "http://localhost:8080/"  # Replace with the application URL
 
 project:
   github_repo: 'https://github.com/bharathbk07/wordsmith.git'  # Placeholder for GitHub repository name
