@@ -225,7 +225,6 @@ pipeline {
                     // Check the current build result, defaulting to 'SUCCESS' if it's null
                     def buildResult = currentBuild.result ?: 'SUCCESS' // Default to 'SUCCESS' if null
 
-
                     // Prepare email content based on build result
                     def emailBodyContent
                     def emailSubject = "${env.EMAIL_SUBJECT} - Build ${buildResult} for build number ${buildNumber}"
