@@ -276,7 +276,14 @@ pipeline {
                 echo "Comment added to Jira issue ${env.ISSUE_KEY} with content: ${jiraCommentText}"
 
                 // Send the Slack message with the build.log attached
-                slackSend channel: env.SLACK_CHANNEL, message: "${commentBody} ${pipelineDetails}", attachmentsPattern: 'build.log'
+                slackSend channel: env.SLACK_CHANNEL, message: "${commentBody} ${pipelineDetails}"
+
+                // Upload the build.log file to Slack
+                slackUploadFile(
+                  channel: env.SLACK_CHANNEL, 
+                  filePath: "${env.ATTACHMENTS}", 
+                  initialComment: 'Build ATTACHMENTS'
+                )
 
                 // Prepare email content based on build result
                 def emailBodyContent
