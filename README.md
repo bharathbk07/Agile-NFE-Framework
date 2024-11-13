@@ -35,6 +35,62 @@ This `Jenkinsfile` defines a CI/CD pipeline for automating the deployment of the
 ![Mail attachement scrrenshot](Screenshot/Datadogreport.png)
 *Screenshot of the showing datadog dashboard report attachment which got in mail.*
 
+![Slack Message](Screenshot/slack.png)
+*Screenshot of the showing slack notification.*
+
+![Jira scrrenshot](Screenshot/Jira.png)
+*Screenshot of the showing jira stroy updated with pipeline job status.*
+
+![LightHouse text](Screenshot/lighthouse.png)
+*Screenshot of the showing lighthouse dashboard report attachment which got in mail.*
+
+## Prerequisites
+
+Ensure the following plugins are installed and configured in Jenkins:
+
+1. **Slack Notifications Plugin**  
+   Enables Jenkins to send notifications to Slack channels based on job status.
+
+2. **NodeJS Plugin**  
+   Provides support for running NodeJS applications within Jenkins.
+
+3. **Datadog Plugin**  
+   Integrates Jenkins with Datadog to send metrics and job statuses for monitoring.
+
+4. **Maven Integration Plugin**  
+   Required for projects using Maven for build automation. This plugin allows Jenkins to manage Maven builds.
+
+5. **Sonar Scanner Plugin**  
+   Integrates SonarQube analysis into Jenkins jobs to provide code quality reports.
+
+6. **Sonar Quality Gate Plugin**  
+   Ensures that code meets the defined quality gates in SonarQube before progressing.
+
+7. **Email Extension Plugin**  
+   Provides enhanced email notification capabilities for build success, failure, and other status updates.
+
+## Installation and Configuration
+
+Each plugin can be installed through the Jenkins Plugin Manager:
+
+1. Go to **Jenkins Dashboard > Manage Jenkins > Manage Plugins**.
+2. Search for each plugin by name and install it.
+3. After installation, configure each plugin as needed for your environment (e.g., Slack Webhook URL, Datadog API key, SonarQube connection settings).
+
+## Additional Configuration
+
+Some plugins may require further setup, such as:
+
+- **Slack Notifications**: Configure Slack Webhook and select channels for notifications.
+- **Datadog**: Set up API and application keys to allow Jenkins to send data to Datadog.
+- **SonarQube**: Ensure connection to SonarQube server and define quality gates.
+
+Refer to each plugin’s documentation for detailed configuration instructions.
+
+---
+
+By ensuring these plugins are properly configured, Jenkins can automate builds, perform quality checks, and provide comprehensive notifications and monitoring.
+
 ## Shift-Left or Shift-Right Approach?
 This pipeline follows a **shift-left approach** by integrating testing (performance and static code analysis) early in the CI/CD process. Shift-left practices help catch issues earlier in the development cycle, minimizing risks and reducing the cost of fixing defects. Additionally, chaos engineering introduces a **shift-right component** by validating the resilience of the application in production-like scenarios, ensuring that the system behaves reliably under real-world conditions.
 
@@ -83,6 +139,20 @@ This pipeline follows a **shift-left approach** by integrating testing (performa
 - Initiates a CPU-based chaos experiment using Gremlin.
 - Requires Gremlin API credentials in Jenkins (`GREMLIN_API_KEY` and `GREMLIN_TEAM_ID`).
 - Logs the attack details and provides a link to view them in the Gremlin dashboard.
+
+### 7. **Run Frontend Performance Testing with Lighthouse**
+- Uses Lighthouse to perform a performance scan on the specified webpage.
+- Generates a detailed performance report, including metrics like page load time, accessibility, SEO, and best practices.
+- **Prerequisites**: Ensure that Lighthouse is installed and configured in Jenkins for scanning.
+
+### Notifications and Updates
+- **Slack Notification**: Sends a notification to the designated Slack channel once the build and performance scan are completed.
+- **Email Notification**: Sends an email update to the configured recipients, providing the build and scan results.
+- **Jira Update**: Automatically updates the Jira story linked to the current build with the build status and performance testing results.
+
+---
+
+These features ensure timely feedback and visibility into the performance testing results, enhancing collaboration and monitoring across teams.
 
 ## Pros of This Approach
 1. **Early Defect Detection**: Catches code quality and performance issues early in the development cycle (shift-left).
@@ -153,3 +223,5 @@ This pipeline automates the entire CI/CD workflow, ensuring code quality, perfor
  - [Installing SonarQube in Docker](https://medium.com/@HoussemDellai/setup-sonarqube-in-a-docker-container-3c3908b624df)
  - [Installing Jenkins in Docker](https://octopus.com/blog/jenkins-docker-install-guide)
  - [Gremlin Trial Account](https://www.gremlin.com/trial)
+ - [How to Send Slack Notifications From Jenkins](https://youtu.be/EDVZli8GdUM?si=dM5tRvyvZk9Dviko)
+ - [How to Integrate Jira With Jenkins](https://youtu.be/-KrlCWVPfJM?si=-SXdIDdTYdNnK3ms)

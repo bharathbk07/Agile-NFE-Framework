@@ -6,7 +6,7 @@
 
 tests:
   jmeter:
-    enabled: true                       # Set to true to enable JMeter test
+    enabled: false                       # Set to true to enable JMeter test
     JMETER_HOME: '/Users/bharathkumarm/apache-jmeter-5.6.3'     # Set the correct JMeter path
     TEST_PLAN: '/Users/bharathkumarm/Docker/JmeterScript/Wordsmith.jmx'    # JMX file for the test
     REPORT_DIR: '/Users/bharathkumarm/Docker/JmeterScript/jmeter-report'         # Directory for results
@@ -17,11 +17,17 @@ tests:
     CPU_LENGTH: 60                      # Duration of CPU attack (in seconds)
     CPU_CORE: 1                         # Number of cores to impact
     CPU_CAPACITY: 100                   # Percentage of total CPU capacity to consume (0-100)
+  
+  lighthouse:
+    enabled: true  # Set to true if you want to run Lighthouse. Prompt the user to modify this if needed.
+    url: "http://localhost:8080/"  # Replace with the application URL
 
 project:
   github_repo: 'https://github.com/bharathbk07/wordsmith.git'  # Placeholder for GitHub repository name
   branch_name: 'main'         # Placeholder for branch name
 
+jira:
+  issue_key: 'CS-1'
 email:
   sendEmail: true               # Set to true to enable email notifications
   recipients: "mkumarbharath50@gmail.com"  # List of email recipients
@@ -30,4 +36,5 @@ email:
   replyTo: "mkumarbharath50@gmail.com"  # Reply-To email address
   attachments:
     - "attachment.html"      # Replace with actual paths to files to attach
+    - "lighthouse_report.html"
 
