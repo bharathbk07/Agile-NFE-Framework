@@ -9,6 +9,7 @@ pipeline {
         SONARQUBE_URL = 'http://localhost:9000'
         PATH = "${tool 'Nodejs'}/bin:${env.PATH}"  // Set PATH to include the Node.js bin folder from the NodeJS installation
         JIRA_SITE = 'https://mkumarbharath50.atlassian.net'
+        SLACK_CHANNEL = '#social' // Slack channel for testing
     }
 
     tools {
@@ -267,12 +268,15 @@ pipeline {
                 }
 
                 // Construct the Jira comment with detailed context
-                def pipelineDetails = "Pipeline: ${projectName}, Build Number: ${buildNumber}, Triggered by: ${user}, Timestamp: ${timestamp}"
+                def pipelineDetails = "Pipeline: ${projectName}, Build Number: ${buildNumber}, Triggered by: ${user}, Timestamp: ${timestamp} - ${env.BUILD_URL}"
                 def jiraCommentText = "${commentBody} ${pipelineDetails}"
 
                 // Add comment to Jira issue
                 jiraComment site: env.JIRA_SITE, issueKey: env.ISSUE_KEY, body: jiraCommentText
                 echo "Comment added to Jira issue ${env.ISSUE_KEY} with content: ${jiraCommentText}"
+
+                // Send the Slack message with the build.log attached
+                slackSend channel: env.SLACK_CHANNEL, message: "${commentBody} ${pipelineDetails}", attachmentsPattern: 'build.log'
 
                 // Prepare email content based on build result
                 def emailBodyContent
