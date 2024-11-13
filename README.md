@@ -41,7 +41,7 @@ This `Jenkinsfile` defines a CI/CD pipeline for automating the deployment of the
 ![Jira scrrenshot](Screenshot/Jira.png)
 *Screenshot of the showing jira stroy updated with pipeline job status.*
 
-![alt text](Screenshot/lighthouse.png.png)
+![LightHouse text](Screenshot/lighthouse.png)
 *Screenshot of the showing lighthouse dashboard report attachment which got in mail.*
 
 ## Prerequisites
