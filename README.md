@@ -44,7 +44,16 @@ This `Jenkinsfile` defines a CI/CD pipeline for automating the deployment of the
 ![LightHouse text](Screenshot/lighthouse.png)
 *Screenshot of the showing lighthouse dashboard report attachment which got in mail.*
 
+---
+
 ## Prerequisites
+
+1. **Jenkins Setup**: Ensure Jenkins is installed and running with your agent configured.
+2. **SonarQube**: Accessible at `http://localhost:9000` with the project configuration.
+3. **Docker**: Installed and running on the Mac system.
+4. **JMeter**: Installed and available at the path specified in the configuration.
+5. **Gremlin**: API credentials configured in Jenkins for chaos experiments.
+6. **Lighthouse**: Installed and running on the Mac system.
 
 Ensure the following plugins are installed and configured in Jenkins:
 
@@ -87,12 +96,14 @@ Some plugins may require further setup, such as:
 
 Refer to each plugin’s documentation for detailed configuration instructions.
 
----
-
 By ensuring these plugins are properly configured, Jenkins can automate builds, perform quality checks, and provide comprehensive notifications and monitoring.
+
+---
 
 ## Shift-Left or Shift-Right Approach?
 This pipeline follows a **shift-left approach** by integrating testing (performance and static code analysis) early in the CI/CD process. Shift-left practices help catch issues earlier in the development cycle, minimizing risks and reducing the cost of fixing defects. Additionally, chaos engineering introduces a **shift-right component** by validating the resilience of the application in production-like scenarios, ensuring that the system behaves reliably under real-world conditions.
+
+---
 
 ## Pipeline Stages
 
@@ -152,8 +163,6 @@ This pipeline follows a **shift-left approach** by integrating testing (performa
 
 ---
 
-These features ensure timely feedback and visibility into the performance testing results, enhancing collaboration and monitoring across teams.
-
 ## Pros of This Approach
 1. **Early Defect Detection**: Catches code quality and performance issues early in the development cycle (shift-left).
 2. **Automated Compliance**: Ensures that the application meets NFE standards such as code quality, performance, and reliability.
@@ -165,13 +174,7 @@ These features ensure timely feedback and visibility into the performance testin
 - **Success**: Logs success message and triggers an email to stakeholders indicating deployment readiness.
 - **Failure**: Logs failure message and prompts for log review.
 
-## Prerequisites
-1. **Jenkins Setup**: Ensure Jenkins is installed and running with your agent configured.
-2. **SonarQube**: Accessible at `http://localhost:9000` with the project configuration.
-3. **Docker**: Installed and running on the Mac system.
-4. **JMeter**: Installed and available at the path specified in the configuration.
-5. **Gremlin**: API credentials configured in Jenkins for chaos experiments.
-
+---
 ## How to Use
 1. Update `configfile.yml` with relevant configurations.
 2. Ensure all prerequisites are fulfilled.
@@ -208,6 +211,7 @@ sudo docker exec -it b281e749ac33 /bin/bash
 gremlin help attack-container
 ```
 
+---
 
 ## Troubleshooting
 - If Docker is not running, start it and retry.
