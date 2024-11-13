@@ -6,13 +6,13 @@
 
 tests:
   jmeter:
-    enabled: true                       # Set to true to enable JMeter test
+    enabled: false                       # Set to true to enable JMeter test
     JMETER_HOME: '/Users/bharathkumarm/apache-jmeter-5.6.3'     # Set the correct JMeter path
     TEST_PLAN: '/Users/bharathkumarm/Docker/JmeterScript/Wordsmith.jmx'    # JMX file for the test
     REPORT_DIR: '/Users/bharathkumarm/Docker/JmeterScript/jmeter-report'         # Directory for results
 
   chaos_experiment:
-    enabled: true                       # Set to true to enable chaos experiment
+    enabled: false                       # Set to true to enable chaos experiment
     TARGET_IDENTIFIER: '1XX.1XX.XX.3'               # Host to target
     CPU_LENGTH: 60                      # Duration of CPU attack (in seconds)
     CPU_CORE: 1                         # Number of cores to impact
@@ -38,4 +38,3 @@ email:
   attachments:
     - "attachment.html"      # Replace with actual paths to files to attach
     - "lighthouse_report.html"
-
