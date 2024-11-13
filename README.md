@@ -140,6 +140,20 @@ This pipeline follows a **shift-left approach** by integrating testing (performa
 - Requires Gremlin API credentials in Jenkins (`GREMLIN_API_KEY` and `GREMLIN_TEAM_ID`).
 - Logs the attack details and provides a link to view them in the Gremlin dashboard.
 
+### 7. **Run Frontend Performance Testing with Lighthouse**
+- Uses Lighthouse to perform a performance scan on the specified webpage.
+- Generates a detailed performance report, including metrics like page load time, accessibility, SEO, and best practices.
+- **Prerequisites**: Ensure that Lighthouse is installed and configured in Jenkins for scanning.
+
+### Notifications and Updates
+- **Slack Notification**: Sends a notification to the designated Slack channel once the build and performance scan are completed.
+- **Email Notification**: Sends an email update to the configured recipients, providing the build and scan results.
+- **Jira Update**: Automatically updates the Jira story linked to the current build with the build status and performance testing results.
+
+---
+
+These features ensure timely feedback and visibility into the performance testing results, enhancing collaboration and monitoring across teams.
+
 ## Pros of This Approach
 1. **Early Defect Detection**: Catches code quality and performance issues early in the development cycle (shift-left).
 2. **Automated Compliance**: Ensures that the application meets NFE standards such as code quality, performance, and reliability.
