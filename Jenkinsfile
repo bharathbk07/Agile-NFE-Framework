@@ -45,6 +45,9 @@ pipeline {
                     env.EMAIL_SUBJECT = config.email.subject
                     env.EMAIL_REPLY_TO = config.email.replyTo
 
+                    //Jira Comment
+                    env.ISSUE_KEY = config.jira.issue_key
+
                     // Set environment variables based on config
                     env.LIGHTHOUSE_RUN = config.tests.lighthouse.enabled.toString()
                     env.LIGHTHOUSE_URL = config.tests.lighthouse.url
@@ -278,6 +281,31 @@ pipeline {
                         attachLog: true,  // Attach build log
                         attachmentsPattern: "${env.ATTACHMENTS}"  // Attach specified files
                     )
+
+                    def issueKey = env.ISSUE_KEY,
+                    def user = env.BUILD_USER_ID ?: 'Unknown User' // User triggering the build
+                    def commentBody
+
+                    switch (currentBuild.result ?: 'SUCCESS') {
+                        case 'SUCCESS':
+                            commentBody = "Pipeline passed successfully."
+                            break
+                        case 'FAILURE':
+                            commentBody = "Pipeline failed."
+                            break
+                        case 'ABORTED':
+                            commentBody = "Pipeline was aborted."
+                            break
+                        default:
+                            commentBody = "Pipeline status is unknown."
+                    }
+
+                    def timestamp = new Date().format("yyyy-MM-dd HH:mm:ss")
+                    def pipelineDetails = "Pipeline: ${env.JOB_NAME}, Build Number: ${env.BUILD_NUMBER}, Triggered by: ${user}, Timestamp: ${timestamp}"
+                    def jiraCommentText = "${commentBody} ${pipelineDetails}"
+
+                    jiraComment site: env.JIRA_SITE, issueKey: issueKey, body: jiraCommentText
+                    echo "Comment added to Jira issue ${issueKey} with content: ${jiraCommentText}"
                 }
             cleanWs()  // Clean up workspace after pipeline execution
             echo 'Pipeline execution completed.'
