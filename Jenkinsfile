@@ -8,6 +8,7 @@ pipeline {
         ATTACK_ID = ''
         SONARQUBE_URL = 'http://localhost:9000'
         PATH = "${tool 'Nodejs'}/bin:${env.PATH}"  // Set PATH to include the Node.js bin folder from the NodeJS installation
+        JIRA_SITE = 'https://mkumarbharath50.atlassian.net'
     }
 
     tools {
@@ -271,7 +272,7 @@ pipeline {
 
                 // Add comment to Jira issue
                 jiraComment site: env.JIRA_SITE, issueKey: env.ISSUE_KEY, body: jiraCommentText
-                echo "Comment added to Jira issue ${issueKey} with content: ${jiraCommentText}"
+                echo "Comment added to Jira issue ${env.ISSUE_KEY} with content: ${jiraCommentText}"
 
                 // Prepare email content based on build result
                 def emailBodyContent
