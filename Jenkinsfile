@@ -241,72 +241,71 @@ pipeline {
     post {
         always {
             script {
-                    // Get values to replace in the templates
-                    def projectName = env.JOB_NAME // Name of the project/job
-                    def buildNumber = env.BUILD_NUMBER // Jenkins build number
-                    def timestamp = new Date().format("yyyy-MM-dd HH:mm:ss") // Current timestamp
-                    // Check the current build result, defaulting to 'SUCCESS' if it's null
-                    def buildResult = currentBuild.result ?: 'SUCCESS' // Default to 'SUCCESS' if null
+                def projectName = env.JOB_NAME
+                def buildNumber = env.BUILD_NUMBER
+                def timestamp = new Date().format("yyyy-MM-dd HH:mm:ss")
+                def buildResult = currentBuild.result ?: 'SUCCESS'
+                def user = env.BUILD_USER_ID ?: 'Unknown User' // User who triggered the build
+                
+                echo "Current Build Status: ${buildResult}."
 
-                    // Prepare email content based on build result
-                    def emailBodyContent
-                    def emailSubject = "${env.EMAIL_SUBJECT} - Build ${buildResult} for build number ${buildNumber}"
-                    echo "Current Build Status: ${buildResult}."
-
-                    if (buildResult == 'SUCCESS') {
-                        sh "python ./Python/json_html_conv.py ${env.REPORT_DIR}/html-report"
-                        sh "mv ./Templates/attachment.html attachment.html"
-                        emailBodyContent = readFile 'Templates/success.html' // Store success template in environment variable
-                    } else {
-                        emailBodyContent = readFile 'Templates/failure.html' // Store failure template in environment variable
-                    }
-
-                    // Replace placeholders with actual values
-                    emailBodyContent = emailBodyContent
-                        .replace('${PROJECT_NAME}', projectName)
-                        .replace('${BUILD_NUMBER}', buildNumber)
-                        .replace('${TIMESTAMP}', timestamp)
-
-                    // Write the email body content to a temporary file
-                    def emailBodyFile = 'emailBodyContent.html'
-                    writeFile file: emailBodyFile, text: emailBodyContent
-
-                    // Send email using mail step
-                    emailext(
-                        to: env.EMAIL_RECIPIENTS,
-                        from: env.EMAIL_SENDER,
-                        subject: emailSubject,
-                        body: readFile(emailBodyFile),
-                        replyTo: env.EMAIL_REPLY_TO,
-                        attachLog: true,  // Attach build log
-                        attachmentsPattern: "${env.ATTACHMENTS}"  // Attach specified files
-                    )
-
-                    def issueKey = env.ISSUE_KEY,
-                    def user = env.BUILD_USER_ID ?: 'Unknown User' // User triggering the build
-                    def commentBody
-
-                    switch (currentBuild.result ?: 'SUCCESS') {
-                        case 'SUCCESS':
-                            commentBody = "Pipeline passed successfully."
-                            break
-                        case 'FAILURE':
-                            commentBody = "Pipeline failed."
-                            break
-                        case 'ABORTED':
-                            commentBody = "Pipeline was aborted."
-                            break
-                        default:
-                            commentBody = "Pipeline status is unknown."
-                    }
-
-                    def timestamp = new Date().format("yyyy-MM-dd HH:mm:ss")
-                    def pipelineDetails = "Pipeline: ${env.JOB_NAME}, Build Number: ${env.BUILD_NUMBER}, Triggered by: ${user}, Timestamp: ${timestamp}"
-                    def jiraCommentText = "${commentBody} ${pipelineDetails}"
-
-                    jiraComment site: env.JIRA_SITE, issueKey: issueKey, body: jiraCommentText
-                    echo "Comment added to Jira issue ${issueKey} with content: ${jiraCommentText}"
+                // Determine the comment body based on build result
+                def commentBody
+                switch (buildResult) {
+                    case 'SUCCESS':
+                        commentBody = "Pipeline passed successfully."
+                        break
+                    case 'FAILURE':
+                        commentBody = "Pipeline failed."
+                        break
+                    case 'ABORTED':
+                        commentBody = "Pipeline was aborted."
+                        break
+                    default:
+                        commentBody = "Pipeline status is unknown."
                 }
+
+                // Construct the Jira comment with detailed context
+                def pipelineDetails = "Pipeline: ${projectName}, Build Number: ${buildNumber}, Triggered by: ${user}, Timestamp: ${timestamp}"
+                def jiraCommentText = "${commentBody} ${pipelineDetails}"
+
+                // Add comment to Jira issue
+                jiraComment site: env.JIRA_SITE, issueKey: env.ISSUE_KEY, body: jiraCommentText
+                echo "Comment added to Jira issue ${issueKey} with content: ${jiraCommentText}"
+
+                // Prepare email content based on build result
+                def emailBodyContent
+                def emailSubject = "${env.EMAIL_SUBJECT} - Build ${buildResult} for build number ${buildNumber}"
+
+                if (buildResult == 'SUCCESS') {
+                    sh "python ./Python/json_html_conv.py ${env.REPORT_DIR}/html-report"
+                    sh "mv ./Templates/attachment.html attachment.html"
+                    emailBodyContent = readFile 'Templates/success.html'
+                } else {
+                    emailBodyContent = readFile 'Templates/failure.html'
+                }
+
+                // Replace placeholders in email body
+                emailBodyContent = emailBodyContent
+                    .replace('${PROJECT_NAME}', projectName)
+                    .replace('${BUILD_NUMBER}', buildNumber)
+                    .replace('${TIMESTAMP}', timestamp)
+
+                // Write email body to a temporary file
+                def emailBodyFile = 'emailBodyContent.html'
+                writeFile file: emailBodyFile, text: emailBodyContent
+
+                // Send email notification
+                emailext(
+                    to: env.EMAIL_RECIPIENTS,
+                    from: env.EMAIL_SENDER,
+                    subject: emailSubject,
+                    body: readFile(emailBodyFile),
+                    replyTo: env.EMAIL_REPLY_TO,
+                    attachLog: true,
+                    attachmentsPattern: "${env.ATTACHMENTS}"
+                )
+            }
             cleanWs()  // Clean up workspace after pipeline execution
             echo 'Pipeline execution completed.'
         }
