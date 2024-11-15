@@ -160,28 +160,14 @@ This pipeline follows a **shift-left approach** by integrating testing (performa
 - Generates a detailed performance report, including metrics like page load time, accessibility, SEO, and best practices.
 - **Prerequisites**: Ensure that Lighthouse is installed and configured in Jenkins for scanning.
 
-### 8. **Accessibility Testing with Pa11y**
+### 8. **Accessibility Testing with Pa11y - Run Accessibility Testing with Pa11y**
 
-## Run Accessibility Testing with Pa11y
 - Uses **Pa11y** to perform accessibility scans on specified webpages.
 - Provides detailed accessibility reports, including issues and WCAG compliance.
 - **Prerequisites**: Ensure that Pa11y is installed and configured in your environment.
 
-## Features
 
-### 1. **Automated Accessibility Testing**
-   - Quickly identifies accessibility issues across webpages.
-   - Supports **WCAG 2.1** (A, AA, AAA) compliance checks.
-
-### 2. **Flexible Reporting**
-   - Supports multiple report formats, including **CSV**, **JSON**, and **HTML**.
-   - Easily integrates with **CI/CD pipelines** for continuous monitoring.
-
-### 3. **Integration Options**
-   - Works with **Pa11y Dashboard** for centralized report management.
-   - Compatible with popular CI tools like **Jenkins**.
-
-### Notifications and Updates
+### 9. **Notifications and Updates**
 - **Slack Notification**: Sends a notification to the designated Slack channel once the build and performance scan are completed.
 - **Email Notification**: Sends an email update to the configured recipients, providing the build and scan results.
 - **Jira Update**: Automatically updates the Jira story linked to the current build with the build status and performance testing results.
