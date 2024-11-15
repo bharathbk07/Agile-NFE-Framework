@@ -68,6 +68,8 @@ Ensure the following plugins are installed and configured in Jenkins:
 
 7. **Email Extension Plugin**  
    Provides enhanced email notification capabilities for build success, failure, and other status updates.
+   
+9. **Pipeline Utility Steps**
 
 ## Installation and Configuration
 
