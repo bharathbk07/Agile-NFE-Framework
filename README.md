@@ -180,57 +180,62 @@ This pipeline follows a **shift-left approach** by integrating testing (performa
 - **Email Notification**: Sends an email update to the configured recipients, providing the build and scan results.
 - **Jira Update**: Automatically updates the Jira story linked to the current build with the build status and performance testing results.
 
----
-
-## Pros of This Approach
-1. **Early Defect Detection**: Catches code quality and performance issues early in the development cycle (shift-left).
-2. **Automated Compliance**: Ensures that the application meets NFE standards such as code quality, performance, and reliability.
-3. **Improved System Resilience**: Chaos experiments help validate the application's behavior under stress (shift-right).
-4. **End-to-End Automation**: Minimizes manual effort by automating the entire process from testing to deployment readiness notifications.
-
 ## Post Execution Actions
 - **Always**: Cleans up the workspace after execution.
 - **Success**: Logs success message and triggers an email to stakeholders indicating deployment readiness.
 - **Failure**: Logs failure message and prompts for log review.
 
 ---
+
+## Pros of the Agile-NFE Framework
+
+### 1. Early Detection of Issues (Shift-Left Approach)
+The framework integrates performance testing, static code analysis, and other quality checks early in the development process, enabling faster detection of issues. This minimizes the cost and risk of defects surfacing later in the development cycle, which is key to achieving high-quality software.
+
+### 2. Continuous Monitoring and Quality Control
+By including SonarQube for static code analysis, the framework ensures that every code commit is scrutinized for quality issues, improving code maintainability and preventing technical debt. The use of JMeter for performance testing further ensures that any performance bottlenecks are identified and resolved promptly.
+
+### 3. Enhanced System Resilience (Shift-Right Approach)
+The chaos engineering component of the framework introduces resilience testing, validating the application’s ability to handle unexpected failures and operate reliably under production-like conditions. This proactive approach helps ensure high availability and fault tolerance in real-world usage.
+
+### 4. Automated Frontend Performance Testing with Lighthouse
+The integration of Lighthouse into the pipeline automates frontend performance testing, enabling teams to monitor critical frontend metrics such as page load time, SEO, accessibility, and best practices continuously. This ensures that user experience is prioritized and optimized throughout the development process.
+
+### 5. Comprehensive Accessibility Testing
+By including Pa11y for automated accessibility testing, the framework ensures that the application is compliant with accessibility standards (such as WCAG), improving inclusivity and ensuring the application is usable by a broader audience.
+
+### 6. Seamless Integration with Notifications and Issue Tracking
+The framework includes automatic Slack Notifications and Email Notifications, providing timely updates to team members about build and performance scan results. Jira Updates ensure that the associated Jira story is updated with the latest status, performance metrics, and results, keeping everyone aligned on progress.
+
+### 7. End-to-End Automation
+The framework automates critical tasks such as build verification, testing, deployment readiness, and stakeholder notification, reducing manual intervention and enabling faster release cycles. This automation boosts productivity and ensures that the application is always production-ready.
+
+### 8. Improved Collaboration Across Teams
+The integration with Jira, Slack, and Email enhances communication across different teams (e.g., developers, testers, and project managers), ensuring that everyone has up-to-date information on the status of the build and testing phases. This promotes collaboration and faster decision-making.
+
+### 9. Scalability and Flexibility
+With the ability to scale performance and chaos testing based on configurable parameters, the framework adapts to various project needs, whether for small applications or large-scale, distributed systems. The framework's flexibility ensures it can grow with the project.
+
+### 10. Complete Feedback Loop
+The combination of static analysis, performance testing, chaos experiments, and frontend testing establishes a complete feedback loop from development through production, ensuring that the software is continuously validated for quality, performance, and resilience.
+
+### 11. Efficient and Cost-Effective
+By shifting testing and quality checks earlier in the development lifecycle, the framework helps reduce the costs associated with late-stage defect detection and remediation. This proactive testing and monitoring approach saves time and effort in the long run.
+
+### 12. Comprehensive Reporting
+Detailed reports generated from performance scans, code quality analysis, and accessibility tests ensure that stakeholders have access to clear, actionable insights about the application’s quality, performance, and compliance, helping in data-driven decision-making.
+
+### 13. Consistent Build and Deployment Process
+The pipeline ensures that builds are tested consistently, deployed in a controlled manner, and updated with relevant notifications, making the deployment process predictable and reliable, with minimal risk of issues arising during deployment.
+
+___
+
 ## How to Use
 1. Update `configfile.yml` with relevant configurations.
 2. Ensure all prerequisites are fulfilled.
 3. Run the pipeline from Jenkins and monitor the logs for each stage.
 
-## Install and Use Gremlin with Docker
-1. Store your Gremlin agent credentials as environment variables, for example
-```bash
-export GREMLIN_TEAM_ID=your_team_id
-```
-```bash
-export GREMLIN_TEAM_SECRET=your_secert_key
-```
-2. Next run the Gremlin Daemon in a Container.Use docker run to pull the official Gremlin Docker image and run the Gremlin daemon
-```bash
-docker run -d --net=host \
-  --cap-add=NET_ADMIN --cap-add=SYS_BOOT --cap-add=SYS_TIME \
-  --cap-add=KILL \
-  -v $PWD/var/lib/gremlin:/var/lib/gremlin \
-  -v $PWD/var/log/gremlin:/var/log/gremlin \
-  -v /var/run/docker.sock:/var/run/docker.sock \
-  -e GREMLIN_TEAM_ID="$GREMLIN_TEAM_ID" \
-  -e GREMLIN_TEAM_SECRET="$GREMLIN_TEAM_SECRET" \
-  -e GREMLIN_CLIENT_TAGS="foo=bar" \
-  gremlin/gremlin daemon
-```
-3. Use `docker ps `to see all running Docker containers
-4. Jump into your Gremlin container with an interactive shell (replace b281e749ac33 with the real ID of your Gremlin container)
-```bash
-sudo docker exec -it b281e749ac33 /bin/bash
-```
-5. From within the container, check out the available attack types:
-```bash
-gremlin help attack-container
-```
-
----
+___
 
 ## Troubleshooting
 - If Docker is not running, start it and retry.
