@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label 'Built-In Node'  // Ensure the job runs on your Mac agent
+        label 'localhost_mac'  // Ensure the job runs on your Mac agent
     }
 
     environment {
