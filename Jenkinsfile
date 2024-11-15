@@ -53,6 +53,10 @@ pipeline {
                     // Set environment variables based on config
                     env.LIGHTHOUSE_RUN = config.tests.lighthouse.enabled.toString()
                     env.LIGHTHOUSE_URL = config.tests.lighthouse.url
+
+                    // Accessibility Testing
+                    env.accessibility_RUN = config.tests.accessibility.enabled.toString()
+                    env.accessibility_URL = config.tests.lighthouse.url
                     
                     // Read attachments from config
                     def attachmentsList = config.email.attachments.collect { it }.join(",")
@@ -172,6 +176,17 @@ pipeline {
                     --output-path lighthouse_report.html \
                     --no-enable-error-reporting \
                     --chrome-flags="--headless"
+                """
+            }
+        }
+
+        stage('Accessibility Testing (Pa11y)') {
+            when {
+                expression { env.accessibility_RUN == 'true' }
+            }
+            steps {
+                sh """
+                pa11y ${env.accessibility_URL} > accessibility_report.csv --reporter csv 
                 """
             }
         }
