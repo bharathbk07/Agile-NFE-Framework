@@ -14,7 +14,6 @@ pipeline {
 
     tools {
         maven 'Maven'  // Use the configured Maven installation
-        //nodejs 'Nodejs'  // Ensure this matches the name you configured
     }
 
     stages {
