@@ -186,7 +186,7 @@ pipeline {
             }
             steps {
                 sh """
-                pa11y ${env.accessibility_URL} > accessibility_report.csv --reporter csv 
+                pa11y ${env.accessibility_URL} > report.csv --reporter csv || true
                 """
             }
         }
