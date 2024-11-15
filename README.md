@@ -1,7 +1,15 @@
 # Agile-NFE Framework - Jenkins Pipeline Documentation
+## Introduction
 
-This `Jenkinsfile` defines a CI/CD pipeline for automating the deployment of the application and ensuring it complies with non-functional engineering (NFE) standards. The pipeline covers key aspects such as **performance testing**, **static code scanning**, and **chaos engineering**. Once all stages are successfully completed, an email is triggered to stakeholders, indicating that the application is ready for deployment.
+The **Agile-NFE Framework** is a comprehensive Continuous Integration and Continuous Deployment (CI/CD) pipeline designed to automate the deployment of applications while ensuring they meet **Non-Functional Engineering (NFE)** standards. This framework integrates key engineering practices such as **performance testing**, **static code analysis**, **chaos engineering**, **frontend testing with Lighthouse**, and **accessibility testing** to ensure that the application is not only functional but also reliable, resilient, performant, and accessible under real-world conditions.
 
+The framework adopts a **Shift-Left** approach by incorporating performance and static code checks early in the development process, minimizing risks and costs associated with defect detection. Additionally, it introduces a **Shift-Right** element through chaos engineering, validating the application’s resilience and behavior in production-like environments, which helps ensure that the application can handle unexpected failures and maintain stability.
+
+With seamless integrations for **Slack Notifications**, **Email Updates**, and **Jira Story Updates**, the Agile-NFE Framework ensures stakeholders are always informed of the latest build status, performance scan results, and application health. **Slack Notifications** keep teams up to date by sending messages to the designated Slack channels when builds and performance scans are completed. **Email notifications** are sent to configured recipients with the build results and performance metrics. Additionally, the framework automatically updates the linked **Jira story** with the build status and performance testing results, ensuring full traceability and visibility across the team.
+
+By automating these critical processes, the Agile-NFE Framework promotes the development of high-quality, production-ready software that adheres to performance, security, and accessibility standards, while fostering rapid, continuous delivery in a collaborative and efficient Agile environment.
+
+---
 ![Jenkins Screenshot](Screenshot/Jenkins.png)
 *Jenkins dashboard displaying the CI/CD pipeline execution status.*
 
