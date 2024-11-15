@@ -99,7 +99,7 @@ pipeline {
             steps {
                 script {
                     // Validate Docker is running
-                    def dockerRunning = sh(script: "docker info", returnStatus: true) == 0
+                    def dockerRunning = sh(script: "docker --version", returnStatus: true) == 0
                     if (!dockerRunning) {
                         error "Docker is not running. Please start Docker and retry."
                     }
