@@ -160,7 +160,7 @@ This pipeline follows a **shift-left approach** by integrating testing (performa
 - Generates a detailed performance report, including metrics like page load time, accessibility, SEO, and best practices.
 - **Prerequisites**: Ensure that Lighthouse is installed and configured in Jenkins for scanning.
 
-### 8. **Accessibility Testing with Pa11y - Run Accessibility Testing with Pa11y**
+### 8. **Accessibility Testing with Pa11y**
 
 - Uses **Pa11y** to perform accessibility scans on specified webpages.
 - Provides detailed accessibility reports, including issues and WCAG compliance.
