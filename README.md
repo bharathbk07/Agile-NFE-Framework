@@ -233,3 +233,4 @@ This pipeline automates the entire CI/CD workflow, ensuring code quality, perfor
  - [Gremlin Trial Account](https://www.gremlin.com/trial)
  - [How to Send Slack Notifications From Jenkins](https://youtu.be/EDVZli8GdUM?si=dM5tRvyvZk9Dviko)
  - [How to Integrate Jira With Jenkins](https://youtu.be/-KrlCWVPfJM?si=-SXdIDdTYdNnK3ms)
+ - [How to setup Pa11y and its Dashboard](https://pa11y.org/)
