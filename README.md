@@ -10,101 +10,77 @@ With seamless integrations for **Slack Notifications**, **Email Updates**, and *
 By automating these critical processes, the Agile-NFE Framework promotes the development of high-quality, production-ready software that adheres to performance, security, and accessibility standards, while fostering rapid, continuous delivery in a collaborative and efficient Agile environment.
 
 ---
-![Jenkins Screenshot](Screenshot/Jenkins.png)
-*Jenkins dashboard displaying the CI/CD pipeline execution status.*
-
-![Docker Screenshot](Screenshot/docker.png)
-*Docker containers running for the application deployment.*
-
-![SonarQube Screenshot](Screenshot/SonarQube.png)
-*SonarQube analysis report showing code quality metrics.*
-
-![Datadog JMeter Screenshot](Screenshot/DatadogJmeter.png)
-*Datadog monitoring dashboard visualizing application performance metrics from JMeter tests.*
-
-![Datadog JMeter Screenshot](Screenshot/DatadogContainer.png)
-*Datadog monitoring dashboard visualizing application containers.*
-
-![Datadog Jenkins Screenshot](Screenshot/JenkinsDatadog.png)
-*Datadog monitoring dashboard visualizing Jenkins.*
-
-![Gremlin Dashboard](Screenshot/Gremlin.png)
-*Gremlin dashboard showing experiments.*
-
-![Application Screenshot](Screenshot/application.png)
-*Screenshot of the application user interface.*
-
-![Jenkins Build Success Mail](Screenshot/success.png)
-*Screenshot of the jenkins build success mail.*
-
-![Jenkins Build Failure Mail](Screenshot/failure.png)
-*Screenshot of the jenkins build failure mail.*
-
-![Mail attachement scrrenshot](Screenshot/Datadogreport.png)
-*Screenshot of the showing datadog dashboard report attachment which got in mail.*
-
-![Slack Message](Screenshot/slack.png)
-*Screenshot of the showing slack notification.*
-
-![Jira scrrenshot](Screenshot/Jira.png)
-*Screenshot of the showing jira stroy updated with pipeline job status.*
-
-![LightHouse text](Screenshot/lighthouse.png)
-*Screenshot of the showing lighthouse dashboard report attachment which got in mail.*
-
-![PA11Y Accessibility Dashboard](Screenshot/pa11y_accessibility_dashboard.png)
-![PA11Y Accessibility Report](Screenshot/pa11y_accessibility_report.png)
-*Screenshot of the showing PA11Y Accessibility Dashboard & Report*
-
----
-
 ## Prerequisites
 
-1. **Jenkins Setup**: Ensure Jenkins is installed and running with your agent configured.
-2. **SonarQube**: Accessible at `http://localhost:9000` with the project configuration.
-3. **Docker**: Installed and running on the Mac system.
-4. **JMeter**: Installed and available at the path specified in the configuration.
-5. **Gremlin**: API credentials configured in Jenkins for chaos experiments.
-6. **Lighthouse**: Installed and running on the Mac system.
+## Jenkins Setup
+Ensure Jenkins is installed and running with the agent configured on the system.
 
-Ensure the following plugins are installed and configured in Jenkins:
+## Tools Required
 
-1. **Slack Notifications Plugin**  
-   Enables Jenkins to send notifications to Slack channels based on job status.
+### 1. **Datadog**
+- Set up Datadog for monitoring and integration with Jenkins.
+- Ensure the necessary API keys and configuration are in place.
 
-2. **NodeJS Plugin**  
-   Provides support for running NodeJS applications within Jenkins.
+### 2. **SonarQube**
+- Accessible at `http://localhost:9000` with the project configuration set up for code quality analysis.
 
-3. **Datadog Plugin**  
-   Integrates Jenkins with Datadog to send metrics and job statuses for monitoring.
+### 3. **Slack**
+- Configure the Slack webhook URL for sending notifications to the appropriate channels.
 
-4. **Maven Integration Plugin**  
-   Required for projects using Maven for build automation. This plugin allows Jenkins to manage Maven builds.
+### 4. **Jira**
+- Ensure Jira is integrated with Jenkins for updating the relevant stories with build and test results.
 
-5. **Sonar Scanner Plugin**  
-   Integrates SonarQube analysis into Jenkins jobs to provide code quality reports.
+### 5. **Pa11y**
+- Set up Pa11y for accessibility testing of web pages.
 
-6. **Sonar Quality Gate Plugin**  
-   Ensures that code meets the defined quality gates in SonarQube before progressing.
+### 6. **Gremlin**
+- Set up Gremlin API credentials for chaos engineering experiments.
 
-7. **Email Extension Plugin**  
-   Provides enhanced email notification capabilities for build success, failure, and other status updates.
+### 7. **JMeter**
+- Installed and available at the specified path for running performance tests.
 
-## Installation and Configuration
+### 8. **Lighthouse**
+- Ensure Lighthouse is installed and configured to run frontend performance tests.
 
-Each plugin can be installed through the Jenkins Plugin Manager:
+### 9. **Docker**
+- Installed and running on the Mac system for building and deploying the application containers.
 
-1. Go to **Jenkins Dashboard > Manage Jenkins > Manage Plugins**.
-2. Search for each plugin by name and install it.
-3. After installation, configure each plugin as needed for your environment (e.g., Slack Webhook URL, Datadog API key, SonarQube connection settings).
+## Jenkins Plugins
+The following plugins must be installed and configured in Jenkins:
 
-## Additional Configuration
+### 1. **Slack Notifications Plugin**
+- Enables Jenkins to send notifications to Slack channels based on job status.
 
-Some plugins may require further setup, such as:
+### 2. **NodeJS Plugin**
+- Provides support for running NodeJS applications within Jenkins.
+- Configure it by selecting "Configure" under the Build Environment section in Jenkins and selecting "Provide Node & npm bin/ folder to PATH" (default settings are sufficient).
 
-- **Slack Notifications**: Configure Slack Webhook and select channels for notifications.
-- **Datadog**: Set up API and application keys to allow Jenkins to send data to Datadog.
-- **SonarQube**: Ensure connection to SonarQube server and define quality gates.
+### 3. **Datadog Plugin**
+- Integrates Jenkins with Datadog to send metrics and job statuses for monitoring.
+
+### 4. **Maven Integration Plugin**
+- Required for projects using Maven for build automation.
+- This plugin allows Jenkins to manage Maven builds.
+
+### 5. **Sonar Scanner Plugin**
+- Integrates SonarQube analysis into Jenkins jobs to provide code quality reports.
+
+### 6. **Sonar Quality Gate Plugin**
+- Ensures that code meets the defined quality gates in SonarQube before progressing.
+
+### 7. **Email Extension Plugin**
+- Provides enhanced email notification capabilities for build success, failure, and other status updates.
+
+> **Note**: Be sure to install all the suggested plugins shown by Jenkins in the Manage Plugins section.
+
+## Gremlin Setup
+Ensure the Gremlin API credentials are configured in Jenkins for chaos experiments. Store your credentials securely as environment variables.
+
+## Jira Setup
+Jira integration should be configured to automatically update the relevant Jira issues with the build status and performance testing results.
+
+## Maven Setup
+Ensure Maven is installed and available for SonarQube integration and project build management.
 
 Refer to each plugin’s documentation for detailed configuration instructions.
 
@@ -251,6 +227,7 @@ This pipeline automates the entire CI/CD workflow, ensuring code quality, perfor
  - [Installing SonarQube in Docker](https://medium.com/@HoussemDellai/setup-sonarqube-in-a-docker-container-3c3908b624df)
  - [Installing Jenkins in Docker](https://octopus.com/blog/jenkins-docker-install-guide)
  - [Gremlin Trial Account](https://www.gremlin.com/trial)
+ - [How to Install and Use Gremlin with Docker](https://www.gremlin.com/community/tutorials/how-to-install-and-use-gremlin-with-docker-on-ubuntu-16-04)
  - [How to Send Slack Notifications From Jenkins](https://youtu.be/EDVZli8GdUM?si=dM5tRvyvZk9Dviko)
  - [How to Integrate Jira With Jenkins](https://youtu.be/-KrlCWVPfJM?si=-SXdIDdTYdNnK3ms)
  - [How to setup Pa11y and its Dashboard](https://pa11y.org/)
