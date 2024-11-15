@@ -47,6 +47,7 @@ This `Jenkinsfile` defines a CI/CD pipeline for automating the deployment of the
 ![PA11Y Accessibility Dashboard](Screenshot/pa11y_accessibility_dashboard.png)
 ![PA11Y Accessibility Report](Screenshot/pa11y_accessibility_report.png)
 *Screenshot of the showing PA11Y Accessibility Dashboard & Report*
+
 ---
 
 ## Prerequisites
