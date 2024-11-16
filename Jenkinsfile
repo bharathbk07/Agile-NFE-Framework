@@ -358,7 +358,7 @@ pipeline {
                     attachmentsPattern: "${env.ATTACHMENTS}"
                 )
             }
-            cleanWs()  // Clean up workspace after pipeline execution
+            //cleanWs()  // Clean up workspace after pipeline execution
             echo 'Pipeline execution completed.'
         }
         success {
