@@ -357,7 +357,7 @@ pipeline {
                 writeFile file: emailBodyFile, text: emailBodyContent
                 
                 // Stop Sustainability Monitor
-                sh "nohup python Python/sustainability.py stop &"
+                sh "python Python/sustainability.py stop"
 
                 // Send email notification
                 emailext(
