@@ -17,6 +17,15 @@ pipeline {
     }
 
     stages {
+        stage('Sustainability Monitor(Custom Code)') {
+            steps {
+                script {
+                    echo "Starting Sustainability Monitoring in the background."
+                    sh "nohup python Python/sustainability.py start &"
+                }
+            }
+        }
+
         stage('Load Job Configuration') {
             steps {
                 script {
@@ -78,15 +87,6 @@ pipeline {
                     dir(env.PROJECT_DIR) {
                         git(url: "${env.GITHUB_REPO}", branch: "${env.BRANCH_NAME}")
                     }
-                }
-            }
-        }
-
-        stage('Sustainability Monitoring(Custom Code)') {
-            steps {
-                script {
-                    echo "Starting Sustainability Monitoring in the background."
-                    sh "nohup python Python/sustainability.py start &"
                 }
             }
         }
@@ -357,7 +357,8 @@ pipeline {
                 writeFile file: emailBodyFile, text: emailBodyContent
                 
                 // Stop Sustainability Monitor
-                sh "python Python/sustainability.py stop"
+                sh "nohup python Python/sustainability.py stop &"
+
                 // Send email notification
                 emailext(
                     to: env.EMAIL_RECIPIENTS,
