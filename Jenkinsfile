@@ -17,7 +17,7 @@ pipeline {
     }
 
     stages {
-        stage('Sustainability Monitor(Custom Code)') {
+        stage('Sustainability Monitor(psutil)') {
             steps {
                 script {
                     echo "Starting Sustainability Monitoring in the background."
