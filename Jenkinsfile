@@ -23,14 +23,18 @@ pipeline {
                     // Load configuration from YAML file
                     def config = readYaml file: 'configfile.yml'
 
+                    // Postman Collection
+                    env.POSTMAN_ENABLED = config.tests.postman.enable.toString()
+                    env.POSTAM_FOLDER_LOC = config.tests.postman.FOLDER_NAME
+
                     // Set environment variables from the YAML config
                     env.JMETER_HOME = config.tests.jmeter.JMETER_HOME
                     env.TEST_PLAN = config.tests.jmeter.TEST_PLAN
                     env.REPORT_DIR = config.tests.jmeter.REPORT_DIR
                     env.JMETER_ENABLED = config.tests.jmeter.enabled.toString()
-                    env.CHAOS_ENABLED = config.tests.chaos_experiment.enabled.toString()
                     
                     // Chaos experiment variables
+                    env.CHAOS_ENABLED = config.tests.chaos_experiment.enabled.toString()
                     env.TARGET_IDENTIFIER = config.tests.chaos_experiment.TARGET_IDENTIFIER ?: ''
                     env.CPU_LENGTH = "${config.tests.chaos_experiment.CPU_LENGTH}"
                     env.CPU_CORE = "${config.tests.chaos_experiment.CPU_CORE}"
@@ -98,7 +102,7 @@ pipeline {
             }
         }
 
-        stage('Validate and Deploy Docker') {
+        stage('Validate and Deploy (Docker)') {
             steps {
                 script {
                     // Validate Docker is running
@@ -188,6 +192,34 @@ pipeline {
                 sh """
                 pa11y ${env.accessibility_URL} > accessibility_report.csv --reporter csv || true
                 """
+            }
+        }
+
+        stage('PT Script Creation (Postman)') {
+            when {
+                expression { env.POSTMAN_ENABLED == 'true' }
+            }
+            steps {
+                sh """
+                python Python/postman2jmx.py Postman_Collection || true
+                """
+                script {
+                    if (fileExists("${env.TEST_PLAN}")) {             
+                        withCredentials([
+                            string(credentialsId: 'DataDog', variable: 'DataDog'),
+                        ]) {
+                            echo "Updating JMeter with datadog for monitor."
+                            jmeterscript = readFile "${env.TEST_PLAN}"
+                            // Replace placeholders in JMeter script with DataDog API Key
+                            jmeterscript = jmeterscript.replace('DATADOG-API-KEY', "${DataDog}")
+                            // Write back the modified script to the TEST_PLAN file
+                            writeFile file: "${env.TEST_PLAN}", text: jmeterscript
+                        }
+                    }
+                    else{
+                        error "JMeter script not created. Postman to JMeter script conversion failed."
+                    }
+                }
             }
         }
 
@@ -326,7 +358,7 @@ pipeline {
                     attachmentsPattern: "${env.ATTACHMENTS}"
                 )
             }
-            cleanWs()  // Clean up workspace after pipeline execution
+            //cleanWs()  // Clean up workspace after pipeline execution
             echo 'Pipeline execution completed.'
         }
         success {
