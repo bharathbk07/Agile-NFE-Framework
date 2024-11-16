@@ -10,7 +10,7 @@ def genai_query(name):
   query = {
     'Performance_Testing_Report':'Analyze the performance test result data generate by Jmeter and suggest some initial analysis & performance engineering.',
     'Code_Analysis_Report':'Analyze the java code and find code level issue related to performance, security, dependency analsysis',
-    'Sustainability_Monitor_Repor':'Analyze the system power consumotion and suggest ways to move towards Sustainable applciaiton devoplement ',
+    'Sustainability_Monitor_Repor':'Analyze the system power consumotion and  Based on the information,provided offer specific suggestions and recommendations to optimize power consumption and support sustainable application development.t ',
     'Accessibility_Testing_Report':'Analyze the Accessibility Testing Report and provide ways for improving Accessibility of the applicaiton'
   }
   return query.get(name,"Analyze the give data and provide insights")
