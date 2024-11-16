@@ -80,7 +80,7 @@ pipeline {
             }
         }
 
-        stage('Clone Repository') {
+        stage('Clone Repository (GitHub)') {
             steps {
                 script {
                     echo "Cloning repository: ${env.GITHUB_REPO} from branch: ${env.BRANCH_NAME}"
@@ -301,6 +301,8 @@ pipeline {
             }
             steps {
                 sh """
+                python Python/sustainability.py stop
+
                 python Python/lab45_ai.py
                 """
             }
@@ -367,9 +369,6 @@ pipeline {
                 def emailBodyFile = 'emailBodyContent.html'
                 writeFile file: emailBodyFile, text: emailBodyContent
                 
-                // Stop Sustainability Monitor
-                sh "python Python/sustainability.py stop"
-
                 // Send email notification
                 emailext(
                     to: env.EMAIL_RECIPIENTS,
