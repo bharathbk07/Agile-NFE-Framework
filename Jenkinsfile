@@ -301,8 +301,7 @@ pipeline {
             }
             steps {
                 sh """
-                python Python/sustainability.py stop
-                python Python/lab45_ai.py
+                python ./Python/lab45_ai.py
                 """
             }
         }
@@ -353,6 +352,7 @@ pipeline {
                 if (buildResult == 'SUCCESS') {
                     sh "python ./Python/json_html_conv.py ${env.REPORT_DIR}/html-report"
                     sh "mv ./Templates/datadog_report.html datadog_report.html"
+                    sh "python ./Python/sustainability.py stop"
                     emailBodyContent = readFile 'Templates/success.html'
                 } else {
                     emailBodyContent = readFile 'Templates/failure.html'
