@@ -141,6 +141,7 @@ def lab45_ai_request(chunks):
   else:
     return("System not available at this moment.")
 
+
 def main():
   # List of file names to process
   file_names = {
@@ -149,7 +150,6 @@ def main():
     'Sustainability_Monitor_Repor':'sustainability_metrics.log',
     'Accessibility_Testing_Report':'accessibility_report.csv'
   }
-
 
   # Iterate over each file in the list
   for testing_name,file_name in file_names.items():
@@ -175,5 +175,5 @@ def main():
 
     print("GenAI Results inserted into 'success.html'")
 
-if __name__ == 'main':
+if __name__ == '__main__':
     main()
