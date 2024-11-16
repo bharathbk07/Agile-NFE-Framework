@@ -204,7 +204,7 @@ pipeline {
                 python Python/postman2jmx.py Postman_Collection || true
                 """
                 script {
-                    if (!fileExists("${env.TEST_PLAN}")) {
+                    if (fileExists("${env.TEST_PLAN}")) {
                         error "JMeter script not created. Postman to JMeter script conversion failed."
                     }
                     withCredentials([
