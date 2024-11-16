@@ -44,6 +44,8 @@ email:
   subject: "Build Notification"   # Subject for the email
   replyTo: "mkumarbharath50@gmail.com"  # Reply-To email address
   attachments:
-    - "attachment.html"      # Replace with actual paths to files to attach
+    - "datadog_report.html"      # Replace with actual paths to files to attach
     - "lighthouse_report.html"
     - "accessibility_report.csv"
+    - "sustainability_report.png"
+    - "sustainability_metrics.log"

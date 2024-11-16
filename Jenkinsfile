@@ -17,6 +17,15 @@ pipeline {
     }
 
     stages {
+        stage('Sustainability Monitor (psutil)') {
+            steps {
+                script {
+                    echo "Starting Sustainability Monitoring in the background."
+                    sh "nohup python Python/sustainability.py start &"
+                }
+            }
+        }
+
         stage('Load Job Configuration') {
             steps {
                 script {
@@ -71,7 +80,7 @@ pipeline {
             }
         }
 
-        stage('Clone Repository') {
+        stage('Clone Repository (GitHub)') {
             steps {
                 script {
                     echo "Cloning repository: ${env.GITHUB_REPO} from branch: ${env.BRANCH_NAME}"
@@ -285,6 +294,17 @@ pipeline {
                 }
             }
         }
+
+        stage('Smart Analysis (lab45)') {
+            when {
+                expression { env.LIGHTHOUSE_RUN == 'true' }
+            }
+            steps {
+                sh """
+                python ./Python/lab45_ai.py
+                """
+            }
+        }
     }
 
     post {
@@ -331,7 +351,8 @@ pipeline {
 
                 if (buildResult == 'SUCCESS') {
                     sh "python ./Python/json_html_conv.py ${env.REPORT_DIR}/html-report"
-                    sh "mv ./Templates/attachment.html attachment.html"
+                    sh "mv ./Templates/datadog_report.html datadog_report.html"
+                    sh "python ./Python/sustainability.py stop"
                     emailBodyContent = readFile 'Templates/success.html'
                 } else {
                     emailBodyContent = readFile 'Templates/failure.html'
@@ -346,7 +367,7 @@ pipeline {
                 // Write email body to a temporary file
                 def emailBodyFile = 'emailBodyContent.html'
                 writeFile file: emailBodyFile, text: emailBodyContent
-
+                
                 // Send email notification
                 emailext(
                     to: env.EMAIL_RECIPIENTS,
