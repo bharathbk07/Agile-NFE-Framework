@@ -204,18 +204,20 @@ pipeline {
                 python Python/postman2jmx.py Postman_Collection || true
                 """
                 script {
-                    if (fileExists("${env.TEST_PLAN}")) {
-                        error "JMeter script not created. Postman to JMeter script conversion failed."
+                    if (fileExists("${env.TEST_PLAN}")) {             
+                        withCredentials([
+                            string(credentialsId: 'DataDog', variable: 'DataDog'),
+                        ]) {
+                            echo "Updating JMeter with datadog for monitor."
+                            jmeterscript = readFile "${env.TEST_PLAN}"
+                            // Replace placeholders in JMeter script with DataDog API Key
+                            jmeterscript = jmeterscript.replace('DATADOG-API-KEY', "${DataDog}")
+                            // Write back the modified script to the TEST_PLAN file
+                            writeFile file: "${env.TEST_PLAN}", text: jmeterscript
+                        }
                     }
-                    withCredentials([
-                        string(credentialsId: 'DataDog', variable: 'DataDog'),
-                    ]) {
-                        echo "Updating JMeter with datadog for monitor."
-                        jmeterscript = readFile "${env.TEST_PLAN}"
-                        // Replace placeholders in JMeter script with DataDog API Key
-                        jmeterscript = jmeterscript.replace('DATADOG-API-KEY', "${DataDog}")
-                        // Write back the modified script to the TEST_PLAN file
-                        writeFile file: "${env.TEST_PLAN}", text: jmeterscript
+                    else{
+                        error "JMeter script not created. Postman to JMeter script conversion failed."
                     }
                 }
             }
