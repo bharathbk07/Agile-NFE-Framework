@@ -232,6 +232,17 @@ pipeline {
             }
         }
 
+        stage('Smart Analysis (lab45)') {
+            when {
+                expression { env.LIGHTHOUSE_RUN == 'true' }
+            }
+            steps {
+                sh """
+                python Python/lab45_ai.py
+                """
+            }
+        }
+
         stage('Performance Testing (JMeter)') {
             when {
                 expression { env.JMETER_ENABLED == 'true' }
