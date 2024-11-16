@@ -82,6 +82,15 @@ pipeline {
             }
         }
 
+        stage('Sustainability Monitoring(Custom Code)') {
+            steps {
+                script {
+                    echo "Starting Sustainability Monitoring."
+                    sh "python Python/sustainability.py start"
+                }
+            }
+        }
+
         stage('Static Code Analysis (SonarQube)') {
             steps {
                 withSonarQubeEnv('Wordsmith') {
@@ -331,7 +340,7 @@ pipeline {
 
                 if (buildResult == 'SUCCESS') {
                     sh "python ./Python/json_html_conv.py ${env.REPORT_DIR}/html-report"
-                    sh "mv ./Templates/attachment.html attachment.html"
+                    sh "mv ./Templates/datadog_report.html datadog_report.html"
                     emailBodyContent = readFile 'Templates/success.html'
                 } else {
                     emailBodyContent = readFile 'Templates/failure.html'
@@ -346,7 +355,9 @@ pipeline {
                 // Write email body to a temporary file
                 def emailBodyFile = 'emailBodyContent.html'
                 writeFile file: emailBodyFile, text: emailBodyContent
-
+                
+                // Stop Sustainability Monitor
+                sh "python Python/sustainability.py stop"
                 // Send email notification
                 emailext(
                     to: env.EMAIL_RECIPIENTS,
