@@ -302,7 +302,6 @@ pipeline {
             steps {
                 sh """
                 python Python/sustainability.py stop
-
                 python Python/lab45_ai.py
                 """
             }

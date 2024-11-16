@@ -106,6 +106,7 @@ def monitor_sustainability_metrics():
             # Prepare data for logging
             log_entry = (f"[{timestamp}] Battery: {battery_percentages[-1]}% | CPU: {cpu_usages[-1]}% | Active Cores: {active_cores[-1]} | "
                         f"Temperatures: {temperatures[-1]} C | Idle Times: {idle_times[-1]} | Uptime: {uptime[-1]}")
+        
             log_data_to_file(log_entry)
             
             # Wait for n seconds
