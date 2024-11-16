@@ -201,7 +201,7 @@ pipeline {
             }
             steps {
                 sh """
-                python Python/postman2jmx.py Postman_Collection
+                python Python/postman2jmx.py Postman_Collection || true
                 """
                 script {
                     if (!fileExists("${env.TEST_PLAN}")) {
