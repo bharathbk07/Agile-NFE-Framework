@@ -13,7 +13,7 @@ globalvariablefile = None
 itr_jmx = ''
 itr_final_jmx = ''
 
-baseline_jmx = """
+baseline_jmx = r"""
 <?xml version="1.0" encoding="UTF-8"?>
 <jmeterTestPlan version="1.2" properties="5.0" jmeter="5.2.1">
     <hashTree>
@@ -254,7 +254,7 @@ baseline_jmx = """
 BASELINE_JMX_FIND
 """
 
-TG_TC_HTTPSampler_jmx = """
+TG_TC_HTTPSampler_jmx = r"""
 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="MY-NAME" enabled="true">DYNAMIC-BODY-PART
     <stringProp name="HTTPSampler.domain">MY-DOMAIN</stringProp>
     <stringProp name="HTTPSampler.port">MY-PORT</stringProp>
@@ -273,18 +273,18 @@ TG_TC_HTTPSampler_jmx = """
 </HTTPSamplerProxy>
 """
 
-headerStringStart_jmx = """
+headerStringStart_jmx = r"""
 <hashTree>
     <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
         <collectionProp name="HeaderManager.headers">
 """
-headerStringEnd_jmx = """
+headerStringEnd_jmx = r"""
 </collectionProp>
 </HeaderManager>
 <hashTree/></hashTree>
 """
 
-raw_body_part = """
+raw_body_part = r"""
 <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
 <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
     <collectionProp name="Arguments.arguments">
@@ -297,7 +297,7 @@ raw_body_part = """
 </elementProp>
 """
 
-without_body_part = """
+without_body_part = r"""
 <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
     <collectionProp name="Arguments.arguments"/>
 </elementProp>

@@ -210,6 +210,7 @@ pipeline {
                     withCredentials([
                         string(credentialsId: 'DataDog', variable: 'DataDog'),
                     ]) {
+                        echo "Updating JMeter with datadog for monitor."
                         jmeterscript = readFile "${env.TEST_PLAN}"
                         // Replace placeholders in JMeter script with DataDog API Key
                         jmeterscript = jmeterscript.replace('DATADOG-API-KEY', "${DataDog}")
