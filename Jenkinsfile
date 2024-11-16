@@ -85,8 +85,8 @@ pipeline {
         stage('Sustainability Monitoring(Custom Code)') {
             steps {
                 script {
-                    echo "Starting Sustainability Monitoring."
-                    sh "python Python/sustainability.py start"
+                    echo "Starting Sustainability Monitoring in the background."
+                    sh "nohup python Python/sustainability.py start &"
                 }
             }
         }
