@@ -1,0 +1,181 @@
+{
+	"info": {
+		"_postman_id": "f3acaa84-0d6a-4650-b2f7-eb4c6c921b01",
+		"name": "Wordsmith",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31700735"
+	},
+	"item": [
+		{
+			"name": "Noun",
+			"item": [
+				{
+					"name": "Noun N=2",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Protocol}}://{Host}}:{{Port}}/words/noun?n=2",
+							"protocol": "{{Protocol}}",
+							"host": [
+								"{{Host}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"words",
+								"noun"
+							],
+							"query": [
+								{
+									"key": "n",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Noun N=1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Protocol}}://{{Host}}:{{Port}}/words/noun?n=1",
+							"protocol": "{{Protocol}}",
+							"host": [
+								"{{Host}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"words",
+								"noun"
+							],
+							"query": [
+								{
+									"key": "n",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Adjective",
+			"item": [
+				{
+					"name": "Adjective N=1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Protocol}}://{{Host}}:{{Port}}/words/adjective?n=1",
+							"protocol": "{{Protocol}}",
+							"host": [
+								"{{Host}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"words",
+								"adjective"
+							],
+							"query": [
+								{
+									"key": "n",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Adjective N=2",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Protocol}}://{{Host}}:{{Port}}/words/adjective?n=2",
+							"protocol": "{{Protocol}}",
+							"host": [
+								"{{Host}}"
+							],
+							"port": "{{Port}}",
+							"path": [
+								"words",
+								"adjective"
+							],
+							"query": [
+								{
+									"key": "n",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Verb",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Protocol}}://{{Host}}:{{Port}}/words/verb",
+					"protocol": "{{Protocol}}",
+					"host": [
+						"{{Host}}"
+					],
+					"port": "{{Port}}",
+					"path": [
+						"words",
+						"verb"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "Host",
+			"value": "localhost"
+		},
+		{
+			"key": "Port",
+			"value": "8080"
+		},
+		{
+			"key": "Protocol",
+			"value": "http",
+			"type": "string"
+		}
+	]
+}
