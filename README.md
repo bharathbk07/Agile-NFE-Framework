@@ -218,14 +218,10 @@ Detailed reports generated from performance scans, code quality analysis, and ac
 ### 13. Consistent Build and Deployment Process
 The pipeline ensures that builds are tested consistently, deployed in a controlled manner, and updated with relevant notifications, making the deployment process predictable and reliable, with minimal risk of issues arising during deployment.
 
-___
-
 ## How to Use
 1. Update `configfile.yml` with relevant configurations.
 2. Ensure all prerequisites are fulfilled.
 3. Run the pipeline from Jenkins and monitor the logs for each stage.
-
-___
 
 ## Troubleshooting
 - If Docker is not running, start it and retry.
