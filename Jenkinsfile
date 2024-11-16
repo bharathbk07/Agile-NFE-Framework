@@ -294,9 +294,8 @@ pipeline {
                 }
             }
         }
-    }
 
-    stage('Smart Analysis (lab45)') {
+        stage('Smart Analysis (lab45)') {
             when {
                 expression { env.LIGHTHOUSE_RUN == 'true' }
             }
@@ -306,6 +305,7 @@ pipeline {
                 """
             }
         }
+    }
 
     post {
         always {
