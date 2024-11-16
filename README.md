@@ -93,73 +93,92 @@ This pipeline follows a **shift-left approach** by integrating testing (performa
 
 ---
 
-## Pipeline Stages
+## Jenkins Pipeline Workflow Steps
 
-### 1. **Load Configuration**
-- Reads the YAML configuration file (`configfile.yml`).
-- Sets environment variables for JMeter and chaos experiments.
-- Loads project details such as GitHub repository URL and branch name.
+### 1. Load Job Configuration
+- **Action:** Read configuration from `configfile.yml`.
+- **Tools:** Jenkins, YAML plugin.
+- **Outputs:** Environment variables for various tests (Postman, JMeter, Lighthouse, Chaos).
 
-### 2. **Clone Repository**
-- Clones the source code from the specified GitHub repository and branch.
+### 2. Clone Repository
+- **Action:** Clone the GitHub repository and switch to the specified branch.
+- **Tools:** Git.
 
-### 3. **Static Code Analysis (SonarQube)**
-- Uses SonarQube to perform static code analysis.
-- Requires a configured SonarQube installation named `Wordsmith` in Jenkins.
-- Uses credentials from Jenkins (`SonarQube_Wordsmith`) to authenticate.
-- Executes Maven commands to analyze code and submit reports to SonarQube.
+### 3. Static Code Analysis (SonarQube)
+- **Action:** Perform static code analysis using SonarQube.
+- **Tools:** Maven, SonarQube.
 
-#### SonarQube Configuration
-- Ensure SonarQube is installed and accessible at `http://localhost:9000`.
-- In Jenkins:
-  1. Go to **Manage Jenkins** -> **Global Tool Configuration**.
-  2. Under **SonarQube Servers**, add a new server with the name **Wordsmith**.
-  3. Create a **SonarQube Token** and store it in Jenkins Credentials with the ID `SonarQube_Wordsmith`.
+### 4. Validate and Deploy (Docker)
+- **Action:** Validate Docker setup, build, and deploy application using Docker Compose.
+- **Tools:** Docker.
 
-- Maven command used:
-  ```bash
-  mvn clean verify sonar:sonar \
-    -Dsonar.projectKey=<project_key> \
-    -Dsonar.projectName=<project_name> \
-    -Dsonar.host.url=<sonarqube_url> \
-    -Dsonar.login=<SONAR_TOKEN>
-  ```
+### 5. Health Check and API Validation
+- **Action:** Verify container statuses and perform a basic health check of the API.
+- **Tools:** Docker, curl.
 
-### 4. **Validate and Deploy Docker**
-- Checks if Docker is running on the Mac node.
-- Builds and deploys the application using Docker Compose.
-- Verifies if the containers are running post-deployment.
+### 6. Front-End Testing (Lighthouse) *(Conditional)*
+- **Action:** Run Lighthouse for front-end performance testing if enabled.
+- **Tools:** Lighthouse.
 
-### 5. **JMeter Performance Testing**
-- Executes performance tests using JMeter if enabled in the configuration.
-- Generates reports in HTML format at the specified directory.
+### 7. Accessibility Testing (Pa11y) *(Conditional)*
+- **Action:** Perform accessibility testing using Pa11y if enabled.
+- **Tools:** Pa11y.
 
-### 6. **Run Chaos Experiment**
-- Initiates a CPU-based chaos experiment using Gremlin.
-- Requires Gremlin API credentials in Jenkins (`GREMLIN_API_KEY` and `GREMLIN_TEAM_ID`).
-- Logs the attack details and provides a link to view them in the Gremlin dashboard.
+### 8. PT Script Creation (Postman) *(Conditional)*
+- **Action:** Convert Postman collections to JMeter scripts for performance testing if enabled.
+- **Tools:** Postman2JMX, JMeter.
 
-### 7. **Run Frontend Performance Testing with Lighthouse**
-- Uses Lighthouse to perform a performance scan on the specified webpage.
-- Generates a detailed performance report, including metrics like page load time, accessibility, SEO, and best practices.
-- **Prerequisites**: Ensure that Lighthouse is installed and configured in Jenkins for scanning.
+### 9. Performance Testing (JMeter) *(Conditional)*
+- **Action:** Run performance tests with JMeter if enabled.
+- **Tools:** JMeter.
 
-### 8. **Accessibility Testing with Pa11y**
+### 10. Chaos Testing (Gremlin) *(Conditional)*
+- **Action:** Initiate a chaos experiment using Gremlin if enabled.
+- **Tools:** Gremlin API.
 
-- Uses **Pa11y** to perform accessibility scans on specified webpages.
-- Provides detailed accessibility reports, including issues and WCAG compliance.
-- **Prerequisites**: Ensure that Pa11y is installed and configured in your environment.
+---
 
+## Post-Execution Steps
 
-### 9. **Notifications and Updates**
-- **Slack Notification**: Sends a notification to the designated Slack channel once the build and performance scan are completed.
-- **Email Notification**: Sends an email update to the configured recipients, providing the build and scan results.
-- **Jira Update**: Automatically updates the Jira story linked to the current build with the build status and performance testing results.
+### 1. Comment on Jira
+- **Action:** Add a comment to the linked Jira issue with the build result and pipeline details.
+- **Tools:** Jira plugin.
 
-## Post Execution Actions
-- **Always**: Cleans up the workspace after execution.
-- **Success**: Logs success message and triggers an email to stakeholders indicating deployment readiness.
-- **Failure**: Logs failure message and prompts for log review.
+### 2. Send Slack Notifications
+- **Action:** Send pipeline status and logs to the configured Slack channel.
+- **Tools:** Slack plugin.
+
+### 3. Send Email Notifications
+- **Action:** Notify recipients with build status, logs, and reports attached.
+- **Tools:** Email plugin (configured with SMTP).
+
+---
+
+## Conditional Paths
+
+- **Lighthouse & Pa11y:** Execute only if respective tests are enabled in the configuration file.
+- **JMeter & Gremlin:** Execute based on configuration and environment setup.
+
+---
+
+## Tools Used
+
+- **Git**: For cloning the repository.
+- **SonarQube**: For static code analysis.
+- **Docker**: For containerization and deployment.
+- **Lighthouse**: For front-end performance testing.
+- **Pa11y**: For accessibility testing.
+- **Postman2JMX**: For converting Postman collections to JMeter scripts.
+- **JMeter**: For performance testing.
+- **Gremlin**: For chaos testing.
+- **Jira Plugin**: For adding comments to Jira issues.
+- **Slack Plugin**: For sending notifications.
+- **Email Plugin**: For sending build status emails.
+
+---
+
+## Diagram
+Refer to the workflow diagram for a visual representation of the pipeline.
 
 ---
 
