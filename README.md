@@ -92,69 +92,95 @@ This pipeline follows a **shift-left approach** by integrating testing (performa
 
 ## Jenkins Pipeline Workflow Steps
 
-### 1. Load Job Configuration
-- **Action:** Read configuration from `configfile.yml`.
-- **Tools:** Jenkins, YAML plugin.
-- **Outputs:** Environment variables for various tests (Postman, JMeter, Lighthouse, Chaos).
+## Overview
 
-### 2. Clone Repository
-- **Action:** Clone the GitHub repository and switch to the specified branch.
-- **Tools:** Git.
+The pipeline is designed to:
+- Monitor sustainability using `psutil`
+- Clone the repository
+- Perform static code analysis using SonarQube
+- Validate and deploy the application using Docker
+- Run health checks and validate APIs
+- Conduct front-end testing using Lighthouse
+- Run accessibility testing with Pa11y
+- Generate Postman-to-JMeter scripts for performance testing
+- Execute performance testing using JMeter
+- Conduct chaos testing with Gremlin
+- Analyze the results using AI models from `lab45`
 
-### 3. Static Code Analysis (SonarQube)
-- **Action:** Perform static code analysis using SonarQube.
-- **Tools:** Maven, SonarQube.
 
-### 4. Validate and Deploy (Docker)
-- **Action:** Validate Docker setup, build, and deploy application using Docker Compose.
-- **Tools:** Docker.
+## 1. **Load Job Configuration**
+   - **Action**: Read configuration from `configfile.yml`.
+   - **Tools**: Jenkins, YAML plugin.
+   - **Outputs**: Environment variables for various tests (Postman, JMeter, Lighthouse, Chaos).
 
-### 5. Health Check and API Validation
-- **Action:** Verify container statuses and perform a basic health check of the API.
-- **Tools:** Docker, curl.
+## 2. **Clone Repository**
+   - **Action**: Clone the GitHub repository and switch to the specified branch.
+   - **Tools**: Git.
 
-### 6. Front-End Testing (Lighthouse) *(Conditional)*
-- **Action:** Run Lighthouse for front-end performance testing if enabled.
-- **Tools:** Lighthouse.
+## 3. **Static Code Analysis (SonarQube)**
+   - **Action**: Perform static code analysis using SonarQube.
+   - **Tools**: Maven, SonarQube.
 
-### 7. Accessibility Testing (Pa11y) *(Conditional)*
-- **Action:** Perform accessibility testing using Pa11y if enabled.
-- **Tools:** Pa11y.
+## 4. **Validate and Deploy (Docker)**
+   - **Action**: Validate Docker setup, build, and deploy the application using Docker Compose.
+   - **Tools**: Docker.
 
-### 8. PT Script Creation (Postman) *(Conditional)*
-- **Action:** Convert Postman collections to JMeter scripts for performance testing if enabled.
-- **Tools:** Postman2JMX, JMeter.
+## 5. **Health Check and API Validation**
+   - **Action**: Verify container statuses and perform a basic health check of the API.
+   - **Tools**: Docker, curl.
 
-### 9. Performance Testing (JMeter) *(Conditional)*
-- **Action:** Run performance tests with JMeter if enabled.
-- **Tools:** JMeter.
+## 6. **Front-End Testing (Lighthouse) (Conditional)**
+   - **Action**: Run Lighthouse for front-end performance testing if enabled.
+   - **Tools**: Lighthouse.
 
-### 10. Chaos Testing (Gremlin) *(Conditional)*
-- **Action:** Initiate a chaos experiment using Gremlin if enabled.
-- **Tools:** Gremlin API.
+## 7. **Accessibility Testing (Pa11y) (Conditional)**
+   - **Action**: Perform accessibility testing using Pa11y if enabled.
+   - **Tools**: Pa11y.
 
+## 8. **PT Script Creation (Postman) (Conditional)**
+   - **Action**: Convert Postman collections to JMeter scripts for performance testing if enabled.
+   - **Tools**: Postman2JMX, JMeter.
+
+## 9. **Performance Testing (JMeter) (Conditional)**
+   - **Action**: Run performance tests with JMeter if enabled.
+   - **Tools**: JMeter.
+
+## 10. **Chaos Testing (Gremlin) (Conditional)**
+   - **Action**: Initiate a chaos experiment using Gremlin if enabled.
+   - **Tools**: Gremlin API.
+
+## 11. **Analyze the Results Using AI Models (lab45)**
+   - **Action**: Leverage AI models from `lab45` to analyze the results from performance, chaos, and accessibility tests.
+   - **Tools**: lab45 AI models.
+
+## 12. **Monitor Sustainability Using `python psutil`**
+   - **Action**: Use `python psutil` to monitor system sustainability during the tests and deployments, including CPU, memory, and disk usage.
+   - **Tools**: `python psutil`.
+
+---
 
 ## Post-Execution Steps
 
-### 1. Comment on Jira
-- **Action:** Add a comment to the linked Jira issue with the build result and pipeline details.
-- **Tools:** Jira plugin.
+### 1. **Comment on Jira**
+   - **Action**: Add a comment to the linked Jira issue with the build result and pipeline details.
+   - **Tools**: Jira plugin.
 
-### 2. Send Slack Notifications
-- **Action:** Send pipeline status and logs to the configured Slack channel.
-- **Tools:** Slack plugin.
+### 2. **Send Slack Notifications**
+   - **Action**: Send pipeline status and logs to the configured Slack channel.
+   - **Tools**: Slack plugin.
 
-### 3. Send Email Notifications
-- **Action:** Notify recipients with build status, logs, and reports attached.
-- **Tools:** Email plugin (configured with SMTP).
+### 3. **Send Email Notifications**
+   - **Action**: Notify recipients with build status, logs, and reports attached.
+   - **Tools**: Email plugin (configured with SMTP).
 
+---
 
 ## Conditional Paths
 
-- **Lighthouse & Pa11y:** Execute only if respective tests are enabled in the configuration file.
-- **JMeter & Gremlin:** Execute based on configuration and environment setup.
+- **Lighthouse & Pa11y**: Execute only if respective tests are enabled in the configuration file.
+- **JMeter & Gremlin**: Execute based on configuration and environment setup.
 
-
+---
 
 ## Tools Used
 
@@ -169,7 +195,8 @@ This pipeline follows a **shift-left approach** by integrating testing (performa
 - **Jira Plugin**: For adding comments to Jira issues.
 - **Slack Plugin**: For sending notifications.
 - **Email Plugin**: For sending build status emails.
-
+- **lab45 AI models**: For analyzing results.
+- **python psutil**: For system sustainability monitoring.
 
 
 ## Diagram
