@@ -173,7 +173,7 @@ def main():
     with open(success_html_path, "w") as file:
       file.write(updated_html)
 
-    print("GenAI Results inserted into 'success.html'")
+    print(f"GenAI Results for {testing_name} inserted into 'success.html'")
 
 if __name__ == '__main__':
     main()
