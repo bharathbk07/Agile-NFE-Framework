@@ -201,8 +201,7 @@ The pipeline is designed to:
 ## Diagram
 Refer to the workflow diagram for a visual representation of the pipeline.
 
-![Workflow Diagram](<Screenshot/Agile NFE.png>)
-
+![alt text](<Screenshot 2024-11-17 at 3.11.06 PM.png>)
 ## Pros of the Agile-NFE Framework
 
 ### 1. Early Detection of Issues (Shift-Left Approach)
