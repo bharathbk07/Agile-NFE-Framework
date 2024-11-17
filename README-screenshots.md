@@ -1,6 +1,6 @@
 # Agile-NFE Framework
 
-![alt text](<Screenshot/Tools Used.png.png>)
+![Tools Used](Screenshot/ToolsUsed.png)
 *Tools Used for this framework.*
 
 ![Jenkins Screenshot](Screenshot/Jenkins.png)
