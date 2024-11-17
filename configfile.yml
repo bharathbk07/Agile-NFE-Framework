@@ -34,6 +34,9 @@ project:
   github_repo: 'https://github.com/bharathbk07/wordsmith.git'  # Placeholder for GitHub repository name
   branch_name: 'main'         # Placeholder for branch name
 
+genai:
+  genai_url: 'api.lab45.ai'
+
 jira:
   issue_key: 'CS-1'
 

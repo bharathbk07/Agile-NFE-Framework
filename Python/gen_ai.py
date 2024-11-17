@@ -2,6 +2,7 @@ import requests
 import json
 from dotenv import load_dotenv,find_dotenv
 import os
+import argparse
 
 success_html_path = 'Templates/success.html'
 
@@ -98,8 +99,8 @@ def get_env_value(key, env_file='.env', token_file='/Users/bharathkumarm/Docker/
     # Fetch the value of the key, either from the .env file or the shell environment
     return os.getenv(key)
 
-def lab45_ai_request(chunks):
-  url = "https://api.lab45.ai/v1.1/skills/completion/query"
+def ai_request(chunks, genai_url):
+  url = f"https://{genai_url}/v1.1/skills/completion/query"
 
   payload_data = {
         "messages": [
@@ -142,7 +143,7 @@ def lab45_ai_request(chunks):
     return("System not available at this moment.")
 
 
-def main():
+def main(genai_url):
   # List of file names to process
   file_names = {
     'Performance_Testing_Report':'/Users/bharathkumarm/Docker/JmeterScript/jmeter-report/html-report/statistics.json',
@@ -160,7 +161,7 @@ def main():
               "content": f"from file {file_name} and {genai_query(testing_name)},",
               "role": "user"
             })
-    data = lab45_ai_request(chunks)
+    data = ai_request(chunks, genai_url)
 
     # Read success.html, replace placeholder, and write output to the same file
     with open(success_html_path, "r") as file:
@@ -176,4 +177,7 @@ def main():
     print(f"GenAI Results for {testing_name} inserted into 'success.html'")
 
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser(description="GenAI URL.")
+    parser.add_argument("genai_url", help="GenAI URL")
+    args = parser.parse_args()
+    main(args.genai_url)

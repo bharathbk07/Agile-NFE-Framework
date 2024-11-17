@@ -63,6 +63,9 @@ pipeline {
                     //Jira Comment
                     env.ISSUE_KEY = config.jira.issue_key
 
+                    //Jira Comment
+                    env.GENAI_URL = config.genai.genai_url
+
                     // Set environment variables based on config
                     env.LIGHTHOUSE_RUN = config.tests.lighthouse.enabled.toString()
                     env.LIGHTHOUSE_URL = config.tests.lighthouse.url
@@ -295,13 +298,13 @@ pipeline {
             }
         }
 
-        stage('Smart Analysis (lab45)') {
+        stage('Smart Analysis (GenAI)') {
             when {
                 expression { env.LIGHTHOUSE_RUN == 'true' }
             }
             steps {
                 sh """
-                python ./Python/lab45_ai.py
+                python ./Python/gen_ai.py ${env.GENAI_URL}
                 """
             }
         }

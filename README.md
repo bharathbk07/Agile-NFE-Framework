@@ -66,7 +66,7 @@ The pipeline is designed to:
 - Generate Postman-to-JMeter scripts for performance testing
 - Execute performance testing using JMeter
 - Conduct chaos testing with Gremlin
-- Analyze the results using AI models from `lab45`
+- Analyze the results using AI models 
 
 
 ## 1. **Load Job Configuration**
@@ -110,9 +110,9 @@ The pipeline is designed to:
    - **Action**: Initiate a chaos experiment using Gremlin if enabled.
    - **Tools**: Gremlin API.
 
-## 11. **Analyze the Results Using AI Models (lab45)**
-   - **Action**: Leverage AI models from `lab45` to analyze the results from performance, chaos, and accessibility tests.
-   - **Tools**: lab45 AI models.
+## 11. **Analyze the Results Using AI Models (GenAI)**
+   - **Action**: Leverage AI models to analyze the results from performance, chaos, and accessibility tests.
+   - **Tools**: Gen AI models.
 
 ## 12. **Monitor Sustainability Using `python psutil`**
    - **Action**: Use `python psutil` to monitor system sustainability during the tests and deployments, including CPU, memory, and disk usage.
@@ -156,7 +156,7 @@ The pipeline is designed to:
 - **Jira Plugin**: For adding comments to Jira issues.
 - **Slack Plugin**: For sending notifications.
 - **Email Plugin**: For sending build status emails.
-- **lab45 AI models**: For analyzing results.
+- **GenAI models**: For analyzing results.
 - **python psutil**: For system sustainability monitoring.
 
 ## Pros of the Agile-NFE Framework
