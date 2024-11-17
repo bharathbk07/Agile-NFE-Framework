@@ -1,5 +1,8 @@
 # Agile-NFE Framework
 
+![alt text](<Screenshot/Tools Used.png.png>)
+*Tools Used for this framework.*
+
 ![Jenkins Screenshot](Screenshot/Jenkins.png)
 *Jenkins dashboard displaying the CI/CD pipeline execution status.*
 
