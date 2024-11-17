@@ -201,7 +201,7 @@ The pipeline is designed to:
 ## Diagram
 Refer to the workflow diagram for a visual representation of the pipeline.
 
-
+![Workflow Diagram](<Screenshot/Agile NFE.png>)
 
 ## Pros of the Agile-NFE Framework
 
