@@ -8,6 +8,11 @@ With seamless integrations for **Slack Notifications**, **Email Updates**, and *
 
 By automating these critical processes, the Agile-NFE Framework promotes the development of high-quality, production-ready software that adheres to performance, security, sustainability, and accessibility standards, while fostering rapid, continuous delivery in a collaborative and efficient Agile environment.
 
+## Diagram
+Refer to the workflow diagram for a visual representation of the pipeline.
+
+![Franewrok flow Diagram](Screenshot/Agile-NFE.png)
+
 ## Prerequisites
 
 ## Jenkins Setup
@@ -15,74 +20,31 @@ Ensure Jenkins is installed and running with the agent configured on the system.
 
 ## Tools Required
 
-### 1. **Datadog**
-- Set up Datadog for monitoring and integration with Jenkins.
-- Ensure the necessary API keys and configuration are in place.
-
-### 2. **SonarQube**
-- Accessible at `http://localhost:9000` with the project configuration set up for code quality analysis.
-
-### 3. **Slack**
-- Configure the Slack webhook URL for sending notifications to the appropriate channels.
-
-### 4. **Jira**
-- Ensure Jira is integrated with Jenkins for updating the relevant stories with build and test results.
-
-### 5. **Pa11y**
-- Set up Pa11y for accessibility testing of web pages.
-
-### 6. **Gremlin**
-- Set up Gremlin API credentials for chaos engineering experiments.
-
-### 7. **JMeter**
-- Installed and available at the specified path for running performance tests.
-
-### 8. **Lighthouse**
-- Ensure Lighthouse is installed and configured to run frontend performance tests.
-
-### 9. **Docker**
-- Installed and running on the Mac system for building and deploying the application containers.
+1. **Datadog**
+2. **SonarQube**
+3. **Slack**
+4. **Jira**
+5. **Pa11y**
+6. **Gremlin**
+7. **JMeter**
+8. **Lighthouse**
+9. **Docker**
 
 ## Jenkins Plugins
 The following plugins must be installed and configured in Jenkins:
 
-### 1. **Slack Notifications Plugin**
-- Enables Jenkins to send notifications to Slack channels based on job status.
-
-### 2. **NodeJS Plugin**
-- Provides support for running NodeJS applications within Jenkins.
-- Configure it by selecting "Configure" under the Build Environment section in Jenkins and selecting "Provide Node & npm bin/ folder to PATH" (default settings are sufficient).
-
-### 3. **Datadog Plugin**
-- Integrates Jenkins with Datadog to send metrics and job statuses for monitoring.
-
-### 4. **Maven Integration Plugin**
-- Required for projects using Maven for build automation.
-- This plugin allows Jenkins to manage Maven builds.
-
-### 5. **Sonar Scanner Plugin**
-- Integrates SonarQube analysis into Jenkins jobs to provide code quality reports.
-
-### 6. **Sonar Quality Gate Plugin**
-- Ensures that code meets the defined quality gates in SonarQube before progressing.
-
-### 7. **Email Extension Plugin**
-- Provides enhanced email notification capabilities for build success, failure, and other status updates.
+1. **Slack Notifications Plugin**
+2. **NodeJS Plugin**
+3. **Datadog Plugin**
+4. **Maven Integration Plugin**
+5. **Sonar Scanner Plugin**
+6. **Sonar Quality Gate Plugin**
+7. **Email Extension Plugin**
+8. **Jira Integration Plugin**
 
 > **Note**: Be sure to install all the suggested plugins shown by Jenkins in the Manage Plugins section.
 
-## Gremlin Setup
-Ensure the Gremlin API credentials are configured in Jenkins for chaos experiments. Store your credentials securely as environment variables.
-
-## Jira Setup
-Jira integration should be configured to automatically update the relevant Jira issues with the build status and performance testing results.
-
-## Maven Setup
-Ensure Maven is installed and available for SonarQube integration and project build management.
-
-Refer to each plugin’s documentation for detailed configuration instructions.
-
-By ensuring these plugins are properly configured, Jenkins can automate builds, perform quality checks, and provide comprehensive notifications and monitoring.
+Refer to each plugin’s documentation for detailed configuration instructions.By ensuring these plugins are properly configured, Jenkins can automate builds, perform quality checks, and provide comprehensive notifications and monitoring.
 
 
 ## Shift-Left or Shift-Right Approach?
@@ -197,12 +159,6 @@ The pipeline is designed to:
 - **lab45 AI models**: For analyzing results.
 - **python psutil**: For system sustainability monitoring.
 
-
-## Diagram
-Refer to the workflow diagram for a visual representation of the pipeline.
-
-![alt text](Screenshot/Agile-NFE.png)
-
 ## Pros of the Agile-NFE Framework
 
 ### 1. Early Detection of Issues (Shift-Left Approach)
@@ -253,9 +209,6 @@ The pipeline ensures that builds are tested consistently, deployed in a controll
 - If Docker is not running, start it and retry.
 - For SonarQube login failures, ensure the correct token is used.
 - Verify Gremlin credentials if the chaos experiment fails to initiate.
-
-## Pipeline Execution
-This pipeline automates the entire CI/CD workflow, ensuring code quality, performance testing, and resilience checks through chaos engineering.
 
 ## Reference
 
