@@ -35,7 +35,7 @@ project:
   branch_name: 'main'         # Placeholder for branch name
 
 genai:
-  genai_url: 'apps.lab45.ai'
+  genai_url: 'api.lab45.ai'
 
 jira:
   issue_key: 'CS-1'
