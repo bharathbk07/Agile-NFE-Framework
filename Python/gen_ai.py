@@ -114,10 +114,13 @@ def ai_request(chunks, genai_url):
                 "role": "user"
             }
         ],
-        "search_provider": "Bing",
-        "stream_response": False,
+        "search_provider":"Bing",
+        "stream_response": false,
         "skill_parameters": {
-            "max_output_tokens": 256
+          "max_output_tokens": 256,
+          "temperature": 0.3,
+          "return_sources": true,
+          "model_name": "gpt-4o"
         }
     }
 
